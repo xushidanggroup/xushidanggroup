@@ -1,80 +1,90 @@
 ---
-# Leave the homepage title empty to use the site title
 title:
 date: 2022-10-24
+
 type: landing
 
 sections:
-  - block: hero
+  - block: slider
     content:
-      title: |
-        Wowchemy
-        Research Group
-      image:
-        filename: welcome.jpg
-      text: |
-        <br>
-        
-        The **Wowchemy Research Group** has been a center of excellence for Artificial Intelligence research, teaching, and practice since its founding in 2016.
-  
-  - block: collection
-    content:
-      title: Latest News
-      subtitle:
-      text:
-      count: 5
-      filters:
-        author: ''
-        category: ''
-        exclude_featured: false
-        publication_type: ''
-        tag: ''
-      offset: 0
-      order: desc
-      page_type: post
+      slides:
+        - title:
+          content: A comprehensive workflow integrating molecular design rules, DFT calculations, and machine learning for the prediction and optimization of photophysical properties in molecular systems.
+          align: center
+          background:
+            image:
+              filename: 1.jpg
+              filters:
+                brightness: 0.8
+            position: center
+            color: '#ffffff'
+        - title:
+          content: Application of advanced machine learning algorithms to predict aggregation-induced emission (AIE) characteristics, achieving high accuracy in identifying promising molecular candidates.
+          align: center
+          background:
+            image:
+              filename: 2.jpg
+              filters:
+                brightness: 0.8
+            position: center
+            color: '#ffffff'
+        - title:
+          content: Visual representation of molecular assembly and interaction using a creative, Lego-inspired 3D modeling approach to highlight the modularity and precision in chemical design.
+          align: center
+          background:
+            image:
+              filename: 3.jpg
+              filters:
+                brightness: 0.8
+            position: center
+            color: '#ffffff'
     design:
-      view: card
-      columns: '1'
-  
+      slide_height: '600px'
+      is_fullscreen: false
+      loop: true
+      interval: 4000
+
   - block: markdown
     content:
-      title:
+      title: 
       subtitle: ''
-      text:
-    design:
-      columns: '1'
-      background:
-        image: 
-          filename: coders.jpg
-          filters:
-            brightness: 1
-          parallax: false
-          position: center
-          size: cover
-          text_color_light: true
-      spacing:
-        padding: ['20px', '0', '20px', '0']
-      css_class: fullscreen
-
-  - block: collection
-    content:
-      title: Latest Preprints
-      text: ""
-      count: 5
-      filters:
-        folders:
-          - publication
-        publication_type: 'article'
-    design:
-      view: citation
-      columns: '1'
-
-  - block: markdown
-    content:
-      title:
-      subtitle:
       text: |
-        {{% cta cta_link="./people/" cta_text="Meet the team →" %}}
-    design:
-      columns: '1'
+        ### We are recruiting!
+
+        We are actively looking for new group members at all levels.
+
+        - SCUT undergraduate students interested in joining the group please shoot Shidang an email.
+        - Undergraduate students interested in joining the group for their PhD/Master are encouraged to apply for admission to an SCUT graduate program.
+        - Graduate students admitted to BMSE or other departments at SCUT, as well as those from other universities, who are interested in working with us should contact Shidang.
+        - We are also on the lookout for outstading postdoctoral researchers/research assistants with a background in any combination of the following: Biology, Artificial Intelligence, Medicine, Organic Chemistry, Computational Chemistry, Materials Science, or Physics. Python chops and experience using databases are a big plus.
 ---
+
+<style>
+  .gallery-main img {
+    max-width: 100%;
+    height: auto;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: opacity 2s ease-in-out;
+    opacity: 1;
+  }
+
+  .gallery-thumbnails img:hover {
+    transform: scale(1.1);
+    border: 2px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+  }
+
+  .slider-title {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+  }
+
+  .slider-background {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 20px;
+    border-radius: 10px;
+  }
+</style>
