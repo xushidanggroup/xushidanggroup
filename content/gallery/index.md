@@ -20,7 +20,7 @@
         padding: 1px;
         box-sizing: border-box;
         min-height: 120px;
-        scroll-behavior: smooth; /* 添加平滑滚动 */
+        scroll-behavior: smooth;
     }
 
     .thumbnail-container {
@@ -59,7 +59,7 @@
         max-height: 80vh;
         height: auto;
         border: none;
-        transition: opacity 1s ease-in-out;
+        transition: opacity 500ms ease-in-out; /* 缩短过渡时间 */
     }
 
     .gallery-nav {
@@ -95,27 +95,35 @@ let autoSwitchInterval;
 const imageBasePath = '/images/';
 const imageFiles = [
     '清远漂流.jpg',
-    '冬至.jpg',
-    '石门.jpg',
-    '石门1.jpg',
-    '石门2.jpg',
-    '石门音乐.jpg',
-    '红林花海.jpg',
-    '羽毛球赛.jpg',
-    '课题组合照.jpg',
-    '毕业典礼合照.jpg',
-    '龙林毕业聚餐.jpg',
-    '大南山_1.jpg',
-    '大南山_2.jpg',
-    '大南山_3.jpg',
-    '大南山_4.jpg',
-    '大南山_5.jpg',
-    '大南山_6.jpg'
+    '冬至.jpg',
+    '石门.jpg',
+    '石门1.jpg',
+    '石门2.jpg',
+    '石门音乐.jpg',
+    '红林花海.jpg',
+    '羽毛球赛.jpg',
+    '课题组合照.jpg',
+    '毕业典礼合照.jpg',
+    '龙林毕业聚餐.jpg',
+    '大南山_1.jpg',
+    '大南山_2.jpg',
+    '大南山_3.jpg',
+    '大南山_4.jpg',
+    '大南山_5.jpg',
+    '大南山_6.jpg'
 ];
 const images = imageFiles.map(fileName => ({
     src: `${imageBasePath}${fileName}`,
     alt: fileName.replace(/_/g, ' ').replace(/\..+$/, '')
 }));
+
+// 图片预加载函数
+function preloadImages() {
+    images.forEach(imgData => {
+        const img = new Image();
+        img.src = imgData.src;
+    });
+}
 
 function generateThumbnails() {
     const container = document.getElementById('thumbnailContainer');
@@ -123,7 +131,8 @@ function generateThumbnails() {
     images.forEach((img, index) => {
         const thumbnail = document.createElement('div');
         thumbnail.className = 'thumbnail-container';
-        thumbnail.innerHTML = `<img src="${img.src}" alt="Thumbnail ${img.alt}">`;
+        // 添加loading="lazy"属性进行懒加载
+        thumbnail.innerHTML = `<img loading="lazy" src="${img.src}" alt="Thumbnail ${img.alt}">`;
         thumbnail.onclick = () => showImage(index, true);
         container.appendChild(thumbnail);
     });
@@ -151,8 +160,9 @@ function scrollThumbnailIntoView(index) {
 async function showImage(index, quick = false) {
     if (index < 0 || index >= images.length) return;
     const mainImage = document.getElementById('mainImage');
-    mainImage.style.transition = `opacity ${quick ? 500 : 1000}ms`;
+    mainImage.style.transition = `opacity ${quick ? 300 : 500}ms`; // 根据需要调整动画时长
     mainImage.style.opacity = 0;
+    // 加载图片时利用缓存
     const actualSrc = await new Promise(resolve => {
         const img = new Image();
         img.src = images[index].src;
@@ -165,7 +175,7 @@ async function showImage(index, quick = false) {
         mainImage.style.opacity = 1;
         currentIndex = index;
         updateActiveThumbnail(index);
-    }, quick ? 500 : 1000);
+    }, quick ? 300 : 500);
     resetAutoSwitch();
 }
 
@@ -191,6 +201,7 @@ document.addEventListener('keydown', (e) => {
 
 document.addEventListener('DOMContentLoaded', () => {
     generateThumbnails();
+    preloadImages(); // 页面加载时预先加载所有图片
     if (images.length > 0) {
         showImage(0, false);
     }
