@@ -13,7 +13,7 @@ sections:
           align: center
           background:
             image:
-              filename: 1.jpg
+              filename: 1.jpg?fm=webp
               filters:
                 brightness: 0.8
             position: center
@@ -23,7 +23,7 @@ sections:
           align: center
           background:
             image:
-              filename: 2.jpg
+              filename: 2.jpg?fm=webp
               filters:
                 brightness: 0.8
             position: center
@@ -33,7 +33,7 @@ sections:
           align: center
           background:
             image:
-              filename: 3.jpg
+              filename: 3.jpg?fm=webp
               filters:
                 brightness: 0.8
             position: center

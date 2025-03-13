@@ -92,7 +92,7 @@
 <script>
 let currentIndex = 0;
 let autoSwitchInterval;
-const imageBasePath = '/images/';
+const imageBasePath = '/images/?fm=webp';
 const imageFiles = [
     '清远漂流.jpg',
     '冬至.jpg',
