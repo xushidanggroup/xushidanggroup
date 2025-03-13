@@ -119,10 +119,11 @@ const images = imageFiles.map(fileName => ({
     alt: fileName.replace(/_/g, ' ').replace(/\..+$/, '')
 }));
 
-const images = imageFiles.map(fileName => ({
-    src: `${imageBasePath}${fileName}`,
-    alt: fileName.replace(/_/g, ' ').replace(/\..+$/, '')
-}));
+// // 不添加?fm=webp
+// const images = imageFiles.map(fileName => ({
+//     src: `${imageBasePath}${fileName}`,
+//     alt: fileName.replace(/_/g, ' ').replace(/\..+$/, '')
+// }));
 
 // 图片预加载函数
 function preloadImages() {
