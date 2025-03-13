@@ -126,7 +126,7 @@
 
 <script>
     let currentIndex = 0;
-    const imageBasePath = './static/images/';
+    const imageBasePath = '/images/';
     const imageFiles = [
         '清远漂流.jpg',
         '冬至.jpg',
