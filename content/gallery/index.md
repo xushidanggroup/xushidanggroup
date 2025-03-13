@@ -141,7 +141,7 @@ function generateThumbnails() {
         thumbnail.className = 'thumbnail-container';
         // 添加loading="lazy"属性进行懒加载
         thumbnail.innerHTML = `<img loading="lazy" src="${img.src}" alt="Thumbnail ${img.alt}">`;
-        thumbnail.onclick = () => showImage(index, true);
+        thumbnail.onmouseover = () => showImage(index, true);
         container.appendChild(thumbnail);
     });
 }
