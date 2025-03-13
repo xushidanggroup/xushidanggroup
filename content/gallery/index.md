@@ -92,7 +92,7 @@
 <script>
 let currentIndex = 0;
 let autoSwitchInterval;
-const imageBasePath = '/images/?fm=webp';
+const imageBasePath = '/images/';
 const imageFiles = [
     '清远漂流.jpg',
     '冬至.jpg',
@@ -112,6 +112,13 @@ const imageFiles = [
     '大南山_5.jpg',
     '大南山_6.jpg'
 ];
+
+// **每张图片单独添加 `?fm=webp`**
+const images = imageFiles.map(fileName => ({
+    src: `${imageBasePath}${fileName}?fm=webp`,
+    alt: fileName.replace(/_/g, ' ').replace(/\..+$/, '')
+}));
+
 const images = imageFiles.map(fileName => ({
     src: `${imageBasePath}${fileName}`,
     alt: fileName.replace(/_/g, ' ').replace(/\..+$/, '')
