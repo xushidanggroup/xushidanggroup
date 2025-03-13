@@ -15,7 +15,7 @@
     /* 缩略图网格 */
     .gallery-thumbnails {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* 让每个缩略图自适应 */
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 15px;
         padding: 20px;
         max-width: 1200px;
@@ -30,9 +30,9 @@
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
-        background: #e0e0e0; /* 背景色，防止加载时突兀 */
+        background: #e0e0e0;
         display: flex;
-        align-items: center;  /* 让图片居中 */
+        align-items: center;
         justify-content: center;
     }
 
@@ -40,9 +40,9 @@
     .thumbnail-container img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* 确保图片填充整个框 */
+        object-fit: cover;
         border-radius: 8px;
-        opacity: 0; /* 初始隐藏 */
+        opacity: 0;
         transition: opacity 0.3s ease-in-out;
     }
 
@@ -57,8 +57,6 @@
         font-size: 14px;
         color: #666;
     }
-
-
 
     /* 模态框样式 */
     .modal {
@@ -127,6 +125,29 @@
         cursor: pointer;
         border-radius: 50%;
     }
+
+    /* 模态框加载动画 */
+    .modal-loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+    }
+
+    .modal-loading .spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-top: 4px solid #2196F3;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
 </style>
 
 <h1>Gallery</h1>
@@ -139,12 +160,16 @@
         <img src="" alt="Main Image" id="modalImage">
         <button class="modal-nav left" onclick="showPreviousImage()">&#10094;</button>
         <button class="modal-nav right" onclick="showNextImage()">&#10095;</button>
+        <!-- 模态框加载动画 -->
+        <div class="modal-loading" id="modalLoading">
+            <div class="spinner"></div>
+        </div>
     </div>
 </div>
 
 <script>
     let currentIndex = 0;
-    const thumbnailBasePath = '/thumbnails/';  // 新增缩略图路径
+    const thumbnailBasePath = '/thumbnails/';
     const imageBasePath = '/images/';
     const imageFiles = [
         '1_清远漂流.jpg',
@@ -167,17 +192,15 @@
     ];
 
     const images = imageFiles.map(fileName => ({
-        thumbSrc: `${thumbnailBasePath}${fileName.replace(/\.(jpg|jpeg|png|webp)$/, '_t.$1')}`, // 生成缩略图路径
-        src: `${imageBasePath}${fileName}`, // 原始大图路径
+        thumbSrc: `${thumbnailBasePath}${fileName.replace(/\.(jpg|jpeg|png|webp)$/, '_t.$1')}`,
+        src: `${imageBasePath}${fileName}`,
         alt: fileName.replace(/_/g, ' ').replace(/\..+$/, '')
     }));
-
 
     // 生成缩略图
     function generateThumbnails() {
         const container = document.getElementById('thumbnailContainer');
         container.innerHTML = '';
-        
         images.forEach((img, index) => {
             const thumbnail = document.createElement('div');
             thumbnail.className = 'thumbnail-container';
@@ -191,7 +214,7 @@
             // 创建图片元素
             const imageElement = document.createElement('img');
             imageElement.loading = 'lazy';
-            imageElement.src = img.thumbSrc; // 这里改为缩略图路径
+            imageElement.src = img.thumbSrc;
             imageElement.alt = `Thumbnail ${img.alt}`;
 
             // 图片加载完成后，隐藏“加载中”文本
@@ -207,16 +230,27 @@
         });
     }
 
-
-
-    // 打开模态框时，使用大图
+    // 打开模态框
     function openModal(index) {
         currentIndex = index;
         const modal = document.getElementById('modal');
         const modalImage = document.getElementById('modalImage');
+        const modalLoading = document.getElementById('modalLoading');
+
+        // 显示模态框和加载动画
         modal.style.display = 'flex';
-        modalImage.src = images[index].src; // 这里改为大图路径
-        modalImage.alt = images[index].alt;
+        modalLoading.style.display = 'block';
+        modalImage.style.opacity = 0;
+
+        // 加载大图
+        const img = new Image();
+        img.src = images[index].src;
+        img.onload = () => {
+            modalImage.src = img.src;
+            modalImage.alt = images[index].alt;
+            modalImage.style.opacity = 1;
+            modalLoading.style.display = 'none'; // 隐藏加载动画
+        };
     }
 
     // 关闭模态框
@@ -224,24 +258,39 @@
         const modal = document.getElementById('modal');
         const modalImage = document.getElementById('modalImage');
         modal.style.display = 'none';
-        modalImage.src = ''; // 释放加载资源
+        modalImage.src = '';
     }
-
 
     // 切换到上一张图片
     function showPreviousImage() {
         currentIndex = (currentIndex - 1 + images.length) % images.length;
-        const modalImage = document.getElementById('modalImage');
-        modalImage.src = images[currentIndex].src;
-        modalImage.alt = images[currentIndex].alt;
+        loadImageIntoModal(currentIndex);
     }
 
     // 切换到下一张图片
     function showNextImage() {
         currentIndex = (currentIndex + 1) % images.length;
+        loadImageIntoModal(currentIndex);
+    }
+
+    // 加载图片到模态框
+    function loadImageIntoModal(index) {
         const modalImage = document.getElementById('modalImage');
-        modalImage.src = images[currentIndex].src;
-        modalImage.alt = images[currentIndex].alt;
+        const modalLoading = document.getElementById('modalLoading');
+
+        // 显示加载动画
+        modalLoading.style.display = 'block';
+        modalImage.style.opacity = 0;
+
+        // 加载大图
+        const img = new Image();
+        img.src = images[index].src;
+        img.onload = () => {
+            modalImage.src = img.src;
+            modalImage.alt = images[index].alt;
+            modalImage.style.opacity = 1;
+            modalLoading.style.display = 'none'; // 隐藏加载动画
+        };
     }
 
     // 键盘切换功能
