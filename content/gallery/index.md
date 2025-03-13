@@ -1,68 +1,80 @@
 <style>
+    /* 基础样式 */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
     h1 {
         text-align: center;
-        margin-bottom: 1px;
+        margin-bottom: 20px;
     }
 
-    .gallery {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
+    /* 缩略图矩阵排列 */
     .gallery-thumbnails {
-        display: flex;
-        justify-content: start;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 10px;
-        overflow-x: auto;
-        white-space: nowrap;
-        width: 100%;
-        padding: 1px;
-        box-sizing: border-box;
-        min-height: 120px;
-        scroll-behavior: smooth;
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
     }
 
     .thumbnail-container {
-        display: inline-block;
         cursor: pointer;
-        position: relative;
-        transition: transform 0.3s;
+        overflow: hidden;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .thumbnail-container:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
     .thumbnail-container img {
-        max-width: 150px;
-        max-height: 100px;
-        width: auto;
-        height: auto;
-        border: 2px solid transparent;
-        transition: transform 0.3s;
-    }
-
-    .thumbnail-container.active img {
-        transform: scale(1.15);
-        border-color: #2196F3;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-
-    .gallery-main {
         width: 100%;
-        max-width: 100%;
-        text-align: center;
-        position: relative;
-        margin-top: 20px;
-        min-height: 500px;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
     }
 
-    .gallery-main img {
+    /* 模态框样式 */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-content {
+        position: relative;
+        max-width: 90%;
+        max-height: 90%;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+    }
+
+    .modal-content img {
         max-width: 100%;
         max-height: 80vh;
-        height: auto;
-        border: none;
-        transition: opacity 500ms ease-in-out;
+        display: block;
+        margin: 0 auto;
     }
 
-    .gallery-nav {
+    /* 模态框中的导航按钮 */
+    .modal-nav {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
@@ -70,55 +82,51 @@
         color: white;
         border: none;
         font-size: 2em;
-        padding: 5px 15px;
+        padding: 10px 20px;
         cursor: pointer;
         z-index: 1;
-    }
-
-    .gallery-nav.left { left: 5px; }
-    .gallery-nav.right { right: 5px; }
-
-    .loading-indicator {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 2;
-    }
-
-    .spinner {
-        border: 4px solid rgba(0, 0, 0, 0.1);
-        border-top: 4px solid #2196F3;
         border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        animation: spin 1s linear infinite;
     }
 
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+    .modal-nav.left {
+        left: 20px;
+    }
+
+    .modal-nav.right {
+        right: 20px;
+    }
+
+    /* 关闭按钮 */
+    .close-modal {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        font-size: 1.5em;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 50%;
     }
 </style>
 
-<div class="gallery">
-    <h1>Gallery</h1>
-    <div class="gallery-thumbnails" id="thumbnailContainer"></div>
-    <div class="gallery-main">
-        <button class="gallery-nav left" onclick="showPreviousImage()">&#10094;</button>
-        <img src="" alt="Main Image" id="mainImage" style="opacity:0;">
-        <button class="gallery-nav right" onclick="showNextImage()">&#10095;</button>
-        <!-- 加载指示器 -->
-        <div id="loadingIndicator" class="loading-indicator" style="display: none;">
-            <div class="spinner"></div>
-        </div>
+<h1>Gallery</h1>
+<div class="gallery-thumbnails" id="thumbnailContainer"></div>
+
+<!-- 模态框 -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeModal()">&times;</button>
+        <img src="" alt="Main Image" id="modalImage">
+        <button class="modal-nav left" onclick="showPreviousImage()">&#10094;</button>
+        <button class="modal-nav right" onclick="showNextImage()">&#10095;</button>
     </div>
 </div>
 
 <script>
     let currentIndex = 0;
-    let autoSwitchInterval;
-    const imageBasePath = '/images/';
+    const imageBasePath = './images/';
     const imageFiles = [
         '清远漂流.jpg',
         '冬至.jpg',
@@ -144,6 +152,7 @@
         alt: fileName.replace(/_/g, ' ').replace(/\..+$/, '')
     }));
 
+    // 生成缩略图
     function generateThumbnails() {
         const container = document.getElementById('thumbnailContainer');
         container.innerHTML = '';
@@ -154,107 +163,57 @@
                 <img 
                     loading="lazy" 
                     src="${img.src}" 
-                    srcset="${img.src}&w=150 150w, ${img.src}&w=300 300w"
-                    sizes="(max-width: 600px) 150px, 300px"
                     alt="Thumbnail ${img.alt}"
                 >`;
-            thumbnail.onclick = () => {
-                const loadingIndicator = document.getElementById('loadingIndicator');
-                loadingIndicator.style.display = 'block'; // 立即显示加载指示器
-                showImage(index, true);
-            };
+            thumbnail.onclick = () => openModal(index);
             container.appendChild(thumbnail);
         });
     }
 
-    async function showImage(index, quick = false) {
-        if (index < 0 || index >= images.length) return;
-
-        const mainImage = document.getElementById('mainImage');
-        const loadingIndicator = document.getElementById('loadingIndicator');
-
-        // 显示加载指示器
-        loadingIndicator.style.display = 'block';
-        mainImage.style.opacity = 0;
-
-        // 加载图片
-        const actualSrc = await new Promise(resolve => {
-            const img = new Image();
-            img.src = images[index].src;
-            img.onload = () => resolve(img.src);
-            img.onerror = () => resolve('/images/fallback.jpg');
-        });
-
-        setTimeout(() => {
-            mainImage.src = actualSrc;
-            mainImage.alt = images[index].alt;
-            mainImage.style.opacity = 1;
-
-            // 隐藏加载指示器
-            loadingIndicator.style.display = 'none';
-
-            currentIndex = index;
-            updateActiveThumbnail(index);
-        }, quick ? 300 : 500);
-
-        resetAutoSwitch();
+    // 打开模态框
+    function openModal(index) {
+        currentIndex = index;
+        const modal = document.getElementById('modal');
+        const modalImage = document.getElementById('modalImage');
+        modal.style.display = 'flex';
+        modalImage.src = images[index].src;
+        modalImage.alt = images[index].alt;
     }
 
-    function updateActiveThumbnail(index) {
-        const thumbnails = document.querySelectorAll('.thumbnail-container');
-        thumbnails.forEach((container, i) => {
-            container.classList.toggle('active', i === index);
-        });
-        scrollThumbnailIntoView(index);
+    // 关闭模态框
+    function closeModal() {
+        const modal = document.getElementById('modal');
+        modal.style.display = 'none';
     }
 
-    function scrollThumbnailIntoView(index) {
-        const container = document.getElementById('thumbnailContainer');
-        const thumbnails = document.querySelectorAll('.thumbnail-container');
-        if (thumbnails[index]) {
-            const thumbnail = thumbnails[index];
-            const containerRect = container.getBoundingClientRect();
-            const thumbnailRect = thumbnail.getBoundingClientRect();
-            container.scrollLeft += (thumbnailRect.left - containerRect.left) - (container.clientWidth / 2) + (thumbnail.clientWidth / 2);
-        }
-    }
-
-    function showNextImage() {
-        currentIndex = (currentIndex + 1) % images.length;
-        showImage(currentIndex, true);
-    }
-
+    // 切换到上一张图片
     function showPreviousImage() {
         currentIndex = (currentIndex - 1 + images.length) % images.length;
-        showImage(currentIndex, true);
+        const modalImage = document.getElementById('modalImage');
+        modalImage.src = images[currentIndex].src;
+        modalImage.alt = images[currentIndex].alt;
     }
 
-    function resetAutoSwitch() {
-        clearInterval(autoSwitchInterval);
-        autoSwitchInterval = setInterval(showNextImage, 5000);
+    // 切换到下一张图片
+    function showNextImage() {
+        currentIndex = (currentIndex + 1) % images.length;
+        const modalImage = document.getElementById('modalImage');
+        modalImage.src = images[currentIndex].src;
+        modalImage.alt = images[currentIndex].alt;
     }
 
+    // 键盘切换功能
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowLeft') showPreviousImage();
-        if (e.key === 'ArrowRight') showNextImage();
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
-        generateThumbnails();
-        preloadImages(); // 页面加载时预先加载所有图片
-        if (images.length > 0) {
-            const mainImage = document.getElementById('mainImage');
-            mainImage.src = images[0].src; // 立即加载首张图片
-            mainImage.style.opacity = 1;
-            currentIndex = 0;
-            updateActiveThumbnail(0);
+        const modal = document.getElementById('modal');
+        if (modal.style.display === 'flex') {
+            if (e.key === 'ArrowLeft') showPreviousImage();
+            if (e.key === 'ArrowRight') showNextImage();
+            if (e.key === 'Escape') closeModal();
         }
     });
 
-    function preloadImages() {
-        images.slice(0, 3).forEach(imgData => { // 仅预加载前三张
-            const img = new Image();
-            img.src = imgData.src;
-        });
-    }
+    // 初始化
+    document.addEventListener('DOMContentLoaded', () => {
+        generateThumbnails();
+    });
 </script>
