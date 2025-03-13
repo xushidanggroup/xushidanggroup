@@ -144,31 +144,34 @@
 
 <script>
     let currentIndex = 0;
+    const thumbnailBasePath = '/thumbnails/';  // 新增缩略图路径
     const imageBasePath = '/images/';
     const imageFiles = [
-        '清远漂流.jpg',
-        '冬至.jpg',
-        '石门.jpg',
-        '石门1.jpg',
-        '石门2.jpg',
-        '石门音乐.jpg',
-        '红林花海.jpg',
-        '羽毛球赛.jpg',
-        '课题组合照.jpg',
-        '毕业典礼合照.jpg',
-        '龙林毕业聚餐.jpg',
-        '大南山_1.jpg',
-        '大南山_2.jpg',
-        '大南山_3.jpg',
-        '大南山_4.jpg',
-        '大南山_5.jpg',
-        '大南山_6.jpg'
+        '1_清远漂流.jpg',
+        '2_冬至.jpg',
+        '3_石门1.jpg',
+        '4_石门2.jpg',
+        '5_石门3.jpg',
+        '6_石门4.jpg',
+        '7_红林花海.jpg',
+        '8_羽毛球赛.jpg',
+        '9_课题组合照.jpg',
+        '10_毕业典礼合照.jpg',
+        '11_龙林毕业聚餐.jpg',
+        '12_大南山1.jpg',
+        '13_大南山2.jpg',
+        '14_大南山3.jpg',
+        '15_大南山4.jpg',
+        '16_大南山5.jpg',
+        '17_大南山6.jpg'
     ];
 
     const images = imageFiles.map(fileName => ({
-        src: `${imageBasePath}${fileName}?fm=webp`,
+        thumbSrc: `${thumbnailBasePath}${fileName.replace(/\.(jpg|jpeg|png|webp)$/, '_t.$1')}`, // 生成缩略图路径
+        src: `${imageBasePath}${fileName}`, // 原始大图路径
         alt: fileName.replace(/_/g, ' ').replace(/\..+$/, '')
     }));
+
 
     // 生成缩略图
     function generateThumbnails() {
@@ -188,7 +191,7 @@
             // 创建图片元素
             const imageElement = document.createElement('img');
             imageElement.loading = 'lazy';
-            imageElement.src = img.src;
+            imageElement.src = img.thumbSrc; // 这里改为缩略图路径
             imageElement.alt = `Thumbnail ${img.alt}`;
 
             // 图片加载完成后，隐藏“加载中”文本
@@ -206,21 +209,24 @@
 
 
 
-    // 打开模态框
+    // 打开模态框时，使用大图
     function openModal(index) {
         currentIndex = index;
         const modal = document.getElementById('modal');
         const modalImage = document.getElementById('modalImage');
         modal.style.display = 'flex';
-        modalImage.src = images[index].src;
+        modalImage.src = images[index].src; // 这里改为大图路径
         modalImage.alt = images[index].alt;
     }
 
     // 关闭模态框
     function closeModal() {
         const modal = document.getElementById('modal');
+        const modalImage = document.getElementById('modalImage');
         modal.style.display = 'none';
+        modalImage.src = ''; // 释放加载资源
     }
+
 
     // 切换到上一张图片
     function showPreviousImage() {
