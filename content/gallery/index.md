@@ -12,22 +12,25 @@
         margin-bottom: 20px;
     }
 
-    /* 缩略图矩阵排列 */
+    /* 缩略图矩阵优化 */
     .gallery-thumbnails {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 10px;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* 增大每个缩略图 */
+        gap: 15px; /* 增大间距 */
         padding: 20px;
         max-width: 1200px;
         margin: 0 auto;
     }
 
     .thumbnail-container {
+        position: relative; /* 让“加载中”文本居中 */
         cursor: pointer;
         overflow: hidden;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
+        aspect-ratio: 16 / 9; /* 统一横向比例 */
+        background: #e0e0e0; /* 背景色，防止加载时突兀 */
     }
 
     .thumbnail-container:hover {
@@ -35,12 +38,25 @@
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
 
+    /* 图片居中显示，保证完整 */
     .thumbnail-container img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain; /* 让整个图片显示，不裁剪 */
         border-radius: 8px;
+        display: none; /* 初始隐藏，等加载完成后显示 */
     }
+
+    /* "加载中" 的文本样式 */
+    .thumbnail-container .loading-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 14px;
+        color: #666;
+    }
+
 
     /* 模态框样式 */
     .modal {
@@ -156,19 +172,36 @@
     function generateThumbnails() {
         const container = document.getElementById('thumbnailContainer');
         container.innerHTML = '';
+        
         images.forEach((img, index) => {
             const thumbnail = document.createElement('div');
             thumbnail.className = 'thumbnail-container';
-            thumbnail.innerHTML = `
-                <img 
-                    loading="lazy" 
-                    src="${img.src}" 
-                    alt="Thumbnail ${img.alt}"
-                >`;
+            
+            // 创建加载中文本
+            const loadingText = document.createElement('div');
+            loadingText.className = 'loading-text';
+            loadingText.innerText = '加载中...';
+            thumbnail.appendChild(loadingText);
+
+            // 创建图片元素
+            const imageElement = document.createElement('img');
+            imageElement.loading = 'lazy';
+            imageElement.src = img.src;
+            imageElement.alt = `Thumbnail ${img.alt}`;
+            
+            // 图片加载完成后，隐藏“加载中”文本
+            imageElement.onload = () => {
+                imageElement.style.display = 'block';
+                loadingText.style.display = 'none';
+            };
+            
+            // 绑定点击事件
             thumbnail.onclick = () => openModal(index);
+            thumbnail.appendChild(imageElement);
             container.appendChild(thumbnail);
         });
     }
+
 
     // 打开模态框
     function openModal(index) {
