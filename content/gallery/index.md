@@ -139,8 +139,15 @@ function generateThumbnails() {
     images.forEach((img, index) => {
         const thumbnail = document.createElement('div');
         thumbnail.className = 'thumbnail-container';
-        // 添加loading="lazy"属性进行懒加载
-        thumbnail.innerHTML = `<img loading="lazy" src="${img.src}" alt="Thumbnail ${img.alt}">`;
+        // 添加 loading="lazy" 属性进行懒加载，并添加 srcset 和 sizes 属性
+        thumbnail.innerHTML = `
+            <img 
+                loading="lazy" 
+                src="${img.src}" 
+                srcset="${img.src}&w=150 150w, ${img.src}&w=300 300w"
+                sizes="(max-width: 600px) 150px, 300px"
+                alt="Thumbnail ${img.alt}"
+            >`;
         thumbnail.onclick = () => showImage(index, true);
         container.appendChild(thumbnail);
     });
@@ -168,7 +175,7 @@ function scrollThumbnailIntoView(index) {
 async function showImage(index, quick = false) {
     if (index < 0 || index >= images.length) return;
     const mainImage = document.getElementById('mainImage');
-    mainImage.style.transition = `opacity ${quick ? 300 : 500}ms`; // 根据需要调整动画时长
+    mainImage.style.transition = `opacity ${quick ? 100 : 200}ms`; // 根据需要调整动画时长
     mainImage.style.opacity = 0;
     // 加载图片时利用缓存
     const actualSrc = await new Promise(resolve => {
@@ -211,7 +218,20 @@ document.addEventListener('DOMContentLoaded', () => {
     generateThumbnails();
     preloadImages(); // 页面加载时预先加载所有图片
     if (images.length > 0) {
-        showImage(0, false);
+        const mainImage = document.getElementById('mainImage');
+        mainImage.src = images[0].src; // 立即加载首张图片
+        mainImage.style.opacity = 1;
+        currentIndex = 0;
+        updateActiveThumbnail(0);
     }
 });
+
+function preloadImages() {
+    images.slice(0, 3).forEach(imgData => { // 仅预加载前三张
+        const img = new Image();
+        img.src = imgData.src;
+    });
+}
+
+
 </script>
