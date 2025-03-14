@@ -93,7 +93,7 @@ sections:
         </script>
 
         <div class="group-photo">
-          <img src="/images/红林花海2024.9.18.jpg?fm=webp" alt="Group Photo 2">
+          <img src="/images/红林花海_2024.9.18.jpg?fm=webp" alt="Group Photo 2">
         </div>
 
         ---
@@ -325,6 +325,6 @@ sections:
 
         ---
         <div class="group-photo">
-          <img src="/images/课题组合照.jpg?fm=webp" alt="Group Photo 1">
+          <img src="/images/9_课题组合照_2024.jpg?fm=webp" alt="Group Photo 1">
         </div> 
 ---
