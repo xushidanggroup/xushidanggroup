@@ -80,6 +80,7 @@
         border-radius: 8px;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
         overflow: hidden;
+        cursor: grab;
     }
 
     .modal-content img {
@@ -87,6 +88,7 @@
         max-height: 80vh;
         display: block;
         margin: 0 auto;
+        transition: transform 0.1s ease;
     }
 
     /* 模态框中的导航按钮 */
@@ -171,6 +173,12 @@
     let currentIndex = 0;
     let isPreloading = true; // 是否允许预加载
     let preloadIndex = 0; // 当前预加载的图片索引
+    let scale = 1; // 图片缩放比例
+    let offsetX = 0; // 图片水平偏移量
+    let offsetY = 0; // 图片垂直偏移量
+    let isDragging = false; // 是否正在拖拽
+    let startX, startY, initialOffsetX, initialOffsetY; // 拖拽起始位置和初始偏移量
+
     const thumbnailBasePath = '/thumbnails/';
     const imageBasePath = '/images/';
     const imageFiles = [
@@ -258,6 +266,12 @@
         const modalImage = document.getElementById('modalImage');
         const modalLoading = document.getElementById('modalLoading');
 
+        // 重置缩放和偏移
+        scale = 1;
+        offsetX = 0;
+        offsetY = 0;
+        modalImage.style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
+
         // 显示模态框和加载动画
         modal.style.display = 'flex';
         modalLoading.style.display = 'block';
@@ -307,6 +321,12 @@
         const modalImage = document.getElementById('modalImage');
         const modalLoading = document.getElementById('modalLoading');
 
+        // 重置缩放和偏移
+        scale = 1;
+        offsetX = 0;
+        offsetY = 0;
+        modalImage.style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
+
         // 显示加载动画
         modalLoading.style.display = 'block';
         modalImage.style.opacity = 0;
@@ -321,6 +341,52 @@
             modalLoading.style.display = 'none';
         };
     }
+
+    // 点击模态框外关闭模态框
+    document.getElementById('modal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('modal')) {
+            closeModal();
+        }
+    });
+
+    // 鼠标滚轮放大
+    document.getElementById('modalImage').addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const modalImage = document.getElementById('modalImage');
+        const rect = modalImage.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        const delta = e.deltaY < 0 ? 1.1 : 0.9; // 滚轮向上放大，向下缩小
+        scale *= delta;
+        offsetX = (offsetX + mouseX - rect.width / 2) * delta - (mouseX - rect.width / 2);
+        offsetY = (offsetY + mouseY - rect.height / 2) * delta - (mouseY - rect.height / 2);
+
+        modalImage.style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
+    });
+
+    // 按住左键拖拽图片
+    document.getElementById('modalImage').addEventListener('mousedown', (e) => {
+        if (e.button === 0) { // 左键
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            initialOffsetX = offsetX;
+            initialOffsetY = offsetY;
+        }
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            offsetX = initialOffsetX + (e.clientX - startX);
+            offsetY = initialOffsetY + (e.clientY - startY);
+            document.getElementById('modalImage').style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
 
     // 键盘切换功能
     document.addEventListener('keydown', (e) => {
