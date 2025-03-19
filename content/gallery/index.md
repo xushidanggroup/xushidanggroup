@@ -170,6 +170,7 @@
 <script>
     let currentIndex = 0;
     let isPreloading = true; // 是否允许预加载
+    let preloadIndex = 0; // 当前预加载的图片索引
     const thumbnailBasePath = '/thumbnails/';
     const imageBasePath = '/images/';
     const imageFiles = [
@@ -238,20 +239,15 @@
 
     // 开始预加载大图
     function startPreloading() {
-        let preloadIndex = 0;
-        const preloadNext = () => {
-            if (preloadIndex >= images.length || !isPreloading) return;
+        if (preloadIndex >= images.length || !isPreloading) return;
 
-            const img = new Image();
-            img.src = images[preloadIndex].src;
-            img.onload = () => {
-                console.log(`预加载完成: ${images[preloadIndex].src}`);
-                preloadIndex++;
-                preloadNext(); // 继续预加载下一张
-            };
+        const img = new Image();
+        img.src = images[preloadIndex].src;
+        img.onload = () => {
+            console.log(`预加载完成: ${images[preloadIndex].src}`);
+            preloadIndex++;
+            startPreloading(); // 继续预加载下一张
         };
-
-        preloadNext();
     }
 
     // 打开模态框
@@ -288,6 +284,10 @@
         const modalImage = document.getElementById('modalImage');
         modal.style.display = 'none';
         modalImage.src = '';
+
+        // 恢复预加载
+        isPreloading = true;
+        startPreloading();
     }
 
     // 切换到上一张图片
