@@ -365,28 +365,28 @@
         modalImage.style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
     });
 
-    // 按住左键拖拽图片
-    document.getElementById('modalImage').addEventListener('mousedown', (e) => {
-        if (e.button === 0) { // 左键
-            isDragging = true;
-            startX = e.clientX;
-            startY = e.clientY;
-            initialOffsetX = offsetX;
-            initialOffsetY = offsetY;
-        }
-    });
+    // // 按住左键拖拽图片
+    // document.getElementById('modalImage').addEventListener('mousedown', (e) => {
+    //     if (e.button === 0) { // 左键
+    //         isDragging = true;
+    //         startX = e.clientX;
+    //         startY = e.clientY;
+    //         initialOffsetX = offsetX;
+    //         initialOffsetY = offsetY;
+    //     }
+    // });
 
-    document.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-            offsetX = initialOffsetX + (e.clientX - startX);
-            offsetY = initialOffsetY + (e.clientY - startY);
-            document.getElementById('modalImage').style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
-        }
-    });
+    // document.addEventListener('mousemove', (e) => {
+    //     if (isDragging) {
+    //         offsetX = initialOffsetX + (e.clientX - startX);
+    //         offsetY = initialOffsetY + (e.clientY - startY);
+    //         document.getElementById('modalImage').style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
+    //     }
+    // });
 
-    document.addEventListener('mouseup', () => {
-        isDragging = false;
-    });
+    // document.addEventListener('mouseup', () => {
+    //     isDragging = false;
+    // });
 
     // 键盘切换功能
     document.addEventListener('keydown', (e) => {
