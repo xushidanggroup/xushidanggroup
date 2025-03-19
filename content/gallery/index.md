@@ -169,6 +169,7 @@
 
 <script>
     let currentIndex = 0;
+    let isPreloading = true; // 是否允许预加载
     const thumbnailBasePath = '/thumbnails/';
     const imageBasePath = '/images/';
     const imageFiles = [
@@ -221,6 +222,11 @@
             imageElement.onload = () => {
                 imageElement.classList.add('loaded');
                 loadingText.style.display = 'none';
+
+                // 缩略图加载完成后，开始预加载大图
+                if (index === images.length - 1) {
+                    startPreloading();
+                }
             };
 
             // 绑定点击事件
@@ -230,8 +236,27 @@
         });
     }
 
+    // 开始预加载大图
+    function startPreloading() {
+        let preloadIndex = 0;
+        const preloadNext = () => {
+            if (preloadIndex >= images.length || !isPreloading) return;
+
+            const img = new Image();
+            img.src = images[preloadIndex].src;
+            img.onload = () => {
+                console.log(`预加载完成: ${images[preloadIndex].src}`);
+                preloadIndex++;
+                preloadNext(); // 继续预加载下一张
+            };
+        };
+
+        preloadNext();
+    }
+
     // 打开模态框
     function openModal(index) {
+        isPreloading = false; // 暂停预加载
         currentIndex = index;
         const modal = document.getElementById('modal');
         const modalImage = document.getElementById('modalImage');
@@ -249,7 +274,11 @@
             modalImage.src = img.src;
             modalImage.alt = images[index].alt;
             modalImage.style.opacity = 1;
-            modalLoading.style.display = 'none'; // 隐藏加载动画
+            modalLoading.style.display = 'none';
+
+            // 当前大图加载完成后，恢复预加载
+            isPreloading = true;
+            startPreloading();
         };
     }
 
@@ -289,7 +318,7 @@
             modalImage.src = img.src;
             modalImage.alt = images[index].alt;
             modalImage.style.opacity = 1;
-            modalLoading.style.display = 'none'; // 隐藏加载动画
+            modalLoading.style.display = 'none';
         };
     }
 
