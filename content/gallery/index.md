@@ -379,36 +379,36 @@
         modalImage.style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
     });
 
-    // 按住左键拖拽图片
-    document.getElementById('modalImage').addEventListener('mousedown', (e) => {
-        if (e.button === 0) { // 左键
-            isDragging = true;
-            startX = e.clientX;
-            startY = e.clientY;
-            initialOffsetX = offsetX;
-            initialOffsetY = offsetY;
-            document.getElementById('modalImage').style.cursor = 'grabbing';
-        }
-    });
+    // // 按住左键拖拽图片
+    // document.getElementById('modalImage').addEventListener('mousedown', (e) => {
+    //     if (e.button === 0) { // 左键
+    //         isDragging = true;
+    //         startX = e.clientX;
+    //         startY = e.clientY;
+    //         initialOffsetX = offsetX;
+    //         initialOffsetY = offsetY;
+    //         document.getElementById('modalImage').style.cursor = 'grabbing';
+    //     }
+    // });
 
-    document.addEventListener('mousemove', (e) => {
-        if (isDragging) {
-            const modalImage = document.getElementById('modalImage');
-            const rect = modalImage.getBoundingClientRect();
+    // document.addEventListener('mousemove', (e) => {
+    //     if (isDragging) {
+    //         const modalImage = document.getElementById('modalImage');
+    //         const rect = modalImage.getBoundingClientRect();
 
-            // 计算新的偏移量
-            offsetX = initialOffsetX + (e.clientX - startX);
-            offsetY = initialOffsetY + (e.clientY - startY);
+    //         // 计算新的偏移量
+    //         offsetX = initialOffsetX + (e.clientX - startX);
+    //         offsetY = initialOffsetY + (e.clientY - startY);
 
-            // 限制偏移量，确保图片始终在模态框内
-            const maxOffsetX = (rect.width * (scale - 1)) / 2;
-            const maxOffsetY = (rect.height * (scale - 1)) / 2;
-            offsetX = Math.min(Math.max(offsetX, -maxOffsetX), maxOffsetX);
-            offsetY = Math.min(Math.max(offsetY, -maxOffsetY), maxOffsetY);
+    //         // 限制偏移量，确保图片始终在模态框内
+    //         const maxOffsetX = (rect.width * (scale - 1)) / 2;
+    //         const maxOffsetY = (rect.height * (scale - 1)) / 2;
+    //         offsetX = Math.min(Math.max(offsetX, -maxOffsetX), maxOffsetX);
+    //         offsetY = Math.min(Math.max(offsetY, -maxOffsetY), maxOffsetY);
 
-            modalImage.style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
-        }
-    });
+    //         modalImage.style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
+    //     }
+    // });
 
     document.addEventListener('mouseup', () => {
         if (isDragging) {
