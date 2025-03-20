@@ -276,7 +276,7 @@
         e.preventDefault();
         const delta = e.deltaY > 0 ? -0.1 : 0.1;
         const newScale = scale + delta;
-        scale = Math.min(Math.max(1, newScale), 3);
+        scale = Math.min(Math.max(1, newScale), 4);
         if (scale <= 1) {
             resetImageTransform();
         } else {
