@@ -151,22 +151,36 @@
     const thumbnailBasePath = '/thumbnails/';
     const imageBasePath = '/images/';
     const imageFiles = [
-        '1_清远漂流.jpg', '2_冬至.jpg', '3_石门1.jpg', '4_石门2.jpg',
-        '5_石门3.jpg', '6_石门4.jpg', '7_红林花海.jpg', '8_羽毛球赛.jpg',
-        '9_课题组合照_2024.jpg', '10_毕业典礼合照.jpg', '11_龙林毕业聚餐_2024.jpg',
-        '12_大南山1.jpg', '13_大南山2.jpg', '14_大南山3.jpg', '15_大南山4.jpg',
-        '16_大南山5.jpg', '17_大南山6.jpg'
+        { fileName: '1_清远漂流.jpg', year: 2024 },
+        { fileName: '2_冬至.jpg', year: 2024 },
+        { fileName: '3_石门1.jpg', year: 2024 },
+        { fileName: '4_石门2.jpg', year: 2024 },
+        { fileName: '5_石门3.jpg', year: 2024 },
+        { fileName: '6_石门4.jpg', year: 2024 },
+        { fileName: '7_红林花海.jpg', year: 2024 },
+        { fileName: '8_羽毛球赛.jpg', year: 2024 },
+        { fileName: '9_课题组合照_2024.jpg', year: 2024 },
+        { fileName: '10_毕业典礼合照.jpg', year: 2024 },
+        { fileName: '11_龙林毕业聚餐_2024.jpg', year: 2024 },
+        { fileName: '12_大南山1.jpg', year: 2025 },
+        { fileName: '13_大南山2.jpg', year: 2025 },
+        { fileName: '14_大南山3.jpg', year: 2025 },
+        { fileName: '15_大南山4.jpg', year: 2025 },
+        { fileName: '16_大南山5.jpg', year: 2025 },
+        { fileName: '17_大南山6.jpg', year: 2025 }
     ];
 
-    const images = imageFiles.map(fileName => ({
-        thumbSrc: thumbnailBasePath + fileName.replace(/\.(jpg|jpeg|png|webp)$/, '_t.$1'),
-        src: imageBasePath + fileName,
-        alt: fileName.replace(/_/g, ' ').replace(/\..+$/, '')
+    const images = imageFiles.map((item, index) => ({
+        thumbSrc: thumbnailBasePath + item.fileName.replace(/\.(jpg|jpeg|png|webp)$/, '_t.$1'),
+        src: imageBasePath + item.fileName,
+        alt: item.fileName.replace(/_/g, ' ').replace(/\..+$/, ''),
+        year: item.year,
+        index: index
     }));
 
     // 按年份分组
-    const images2024 = images.slice(0, Math.ceil(images.length / 2)); // 前一半为 2024 年
-    const images2025 = images.slice(Math.ceil(images.length / 2));    // 后一半为 2025 年
+    const images2024 = images.filter(img => img.year === 2024);
+    const images2025 = images.filter(img => img.year === 2025);
 
     // 生成缩略图
     function generateThumbnails() {
@@ -177,12 +191,12 @@
     function generateThumbnailsForYear(yearImages, containerId) {
         const container = document.getElementById(containerId);
         container.innerHTML = '';
-        yearImages.forEach((img, index) => {
+        yearImages.forEach(img => {
             const thumbnail = document.createElement('div');
             thumbnail.className = 'thumbnail-container';
             const loadingText = document.createElement('div');
             loadingText.className = 'loading-text';
-            loadingText.innerText = 'loading';
+            loadingText.textContent = 'loading';
             thumbnail.appendChild(loadingText);
             const imageElement = document.createElement('img');
             imageElement.loading = 'lazy';
@@ -192,9 +206,7 @@
                 imageElement.classList.add('loaded');
                 loadingText.style.display = 'none';
             };
-            // 计算全局索引
-            const globalIndex = containerId === 'thumbnails2024' ? index : index + images2024.length;
-            thumbnail.onclick = () => openModal(globalIndex);
+            thumbnail.onclick = () => openModal(img.index);
             thumbnail.appendChild(imageElement);
             container.appendChild(thumbnail);
         });
