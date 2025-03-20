@@ -275,9 +275,9 @@
         e.preventDefault();
         const delta = e.deltaY > 0 ? -0.1 : 0.1;
         const newScale = scale + delta;
-        scale = Math.min(Math.max(1, newScale), 3); // 限制缩放范围 1 - 3
+        scale = Math.min(Math.max(1, newScale), 3);
         if (scale <= 1) {
-            resetImageTransform(); // 滚轮向后滚到小于等于1时重置
+            resetImageTransform();
         } else {
             restrictTranslate();
             applyTransform();
@@ -287,7 +287,7 @@
 
     // 拖拽开始
     document.getElementById('modalImage').addEventListener('mousedown', (e) => {
-        if (scale <= 1) return; // 未放大时不可拖拽
+        if (scale <= 1) return;
         e.preventDefault();
         isDragging = true;
         startX = e.clientX - translateX;
@@ -310,7 +310,7 @@
         if (scale > 1) document.getElementById('modalImage').style.cursor = 'grab';
     });
 
-    // 限制平移范围，确保图片填充模态框
+    // 限制平移范围，确保图片边缘不脱离模态框
     function restrictTranslate() {
         const modalContent = document.querySelector('.modal-content');
         const modalImage = document.getElementById('modalImage');
@@ -319,22 +319,24 @@
         const scaledWidth = imgRect.width * scale;
         const scaledHeight = imgRect.height * scale;
 
-        // 计算平移的最大和最小值
-        const maxTranslateX = (scaledWidth - modalRect.width) / 2 / scale;
-        const maxTranslateY = (scaledHeight - modalRect.height) / 2 / scale;
-
         // 如果缩放后图片小于模态框，重置平移
         if (scaledWidth <= modalRect.width) translateX = 0;
         if (scaledHeight <= modalRect.height) translateY = 0;
 
-        // 限制平移范围，确保图片填充模态框
-        if (maxTranslateX > 0) {
-            translateX = Math.min(Math.max(translateX, -maxTranslateX), maxTranslateX);
+        // 计算平移范围，确保图片边缘不脱离模态框
+        const minTranslateX = (modalRect.width - scaledWidth) / (2 * scale);
+        const maxTranslateX = -minTranslateX;
+        const minTranslateY = (modalRect.height - scaledHeight) / (2 * scale);
+        const maxTranslateY = -minTranslateY;
+
+        // 限制平移值
+        if (scaledWidth > modalRect.width) {
+            translateX = Math.max(Math.min(translateX, maxTranslateX), minTranslateX);
         } else {
             translateX = 0;
         }
-        if (maxTranslateY > 0) {
-            translateY = Math.min(Math.max(translateY, -maxTranslateY), maxTranslateY);
+        if (scaledHeight > modalRect.height) {
+            translateY = Math.max(Math.min(translateY, maxTranslateY), minTranslateY);
         } else {
             translateY = 0;
         }
