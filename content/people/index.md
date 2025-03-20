@@ -57,6 +57,13 @@ sections:
           .person .email:hover span, .person .scholar:hover span {
             display: inline;
           }
+          .person a {
+            text-decoration: none;
+            color: inherit;
+          }
+          .person a:hover {
+            text-decoration: underline;
+          }
           @media (max-width: 1200px) {
             .person {
               flex: 1 1 calc(25% - 20px);
@@ -102,8 +109,8 @@ sections:
 
         <div class="container">
           <div class="person">
-            <img src="Xu/avatar.jpg" alt="Shidang Xu 许适当">
-            <p class="name">Shidang Xu 许适当</p>
+            <a href="/people/Xu/"><img src="Xu/avatar.jpg" alt="Shidang Xu 许适当"></a>
+            <p class="name"><a href="/people/Xu/">Shidang Xu 许适当</a></p>
             <p class="details">Professor in Biomedical Engineering</p>
             <div class="email" onclick="copyToClipboard('xusd@scut.edu.cn')">
               <i class="fas fa-envelope"></i><span>xusd@scut.edu.cn</span>
@@ -120,8 +127,8 @@ sections:
 
         <div class="container">
           <div class="person">
-            <img src="Bin/avatar.jpg" alt="Bin Xu">
-            <p class="name">Bin Xu 许膑</p>
+            <a href="/people/Bin/"><img src="Bin/avatar.jpg" alt="Bin Xu"></a>
+            <p class="name"><a href="/people/Bin/">Bin Xu 许膑</a></p>
             <p class="details">23 PhD Student in Biomedical Engineering</p>
             <div class="email" onclick="copyToClipboard('bun_hui@126.com')">
               <i class="fas fa-envelope"></i><span>bun_hui@126.com</span>
@@ -131,16 +138,16 @@ sections:
             </div>
           </div>
           <div class="person">
-            <img src="NB/avatar.jpg" alt="Graduate Student">
-            <p class="name">Bo Niu 牛博</p>
+            <a href="/people/NB/"><img src="NB/avatar.jpg" alt="Graduate Student"></a>
+            <p class="name"><a href="/people/NB/">Bo Niu 牛博</a></p>
             <p class="details">24 Master’s Student in Pharmacy</p>
             <div class="email" onclick="copyToClipboard('niubo7645@gmail.com')">
               <i class="fas fa-envelope"></i><span>niubo7645@gmail.com</span>
             </div>
           </div>
           <div class="person">
-            <img src="CC/avatar.jpg" alt="Graduate Student">
-            <p class="name">Chenchen Li 李晨晨</p>
+            <a href="/people/CC/"><img src="CC/avatar.jpg" alt="Graduate Student"></a>
+            <p class="name"><a href="/people/CC/">Chenchen Li 李晨晨</a></p>
             <p class="details">23 PhD Student in Biomedical Engineering</p>
             <div class="email" onclick="copyToClipboard('lcc1430880822@163.com')">
               <i class="fas fa-envelope"></i><span>lcc1430880822@163.com</span>
@@ -150,88 +157,88 @@ sections:
             </div>
           </div>
           <div class="person">
-            <img src="GF/avatar.jpg" alt="Graduate Student">
-            <p class="name">Guifang Zhen 甄桂芳</p>
+            <a href="/people/GF/"><img src="GF/avatar.jpg" alt="Graduate Student"></a>
+            <p class="name"><a href="/people/GF/">Guifang Zhen 甄桂芳</a></p>
             <p class="details">25 Master’s Student in Pharmacy</p>
             <div class="email" onclick="copyToClipboard('19866809606@163.com')">
               <i class="fas fa-envelope"></i><span>19866809606@163.com</span>
             </div>
           </div>
           <div class="person">
-            <img src="JD/avatar.jpg" alt="Graduate Student">
-            <p class="name">Jinda Yan 闫缙达</p>
+            <a href="/people/JD/"><img src="JD/avatar.jpg" alt="Graduate Student"></a>
+            <p class="name"><a href="/people/JD/">Jinda Yan 闫缙达</a></p>
             <p class="details">24 PhD Student in Materials and Chemical Engineering</p>
             <div class="email" onclick="copyToClipboard('jdyan09@163.com')">
               <i class="fas fa-envelope"></i><span>jdyan09@163.com</span>
             </div>
           </div>
           <div class="person">
-            <img src="JC/avatar.jpg" alt="Graduate Student">
-            <p class="name">Jingcheng Mo 莫景丞</p>
+            <a href="/people/JC/"><img src="JC/avatar.jpg" alt="Graduate Student"></a>
+            <p class="name"><a href="/people/JC/">Jingcheng Mo 莫景丞</a></p>
             <p class="details">24 Master’s Student in Pharmacy</p>
             <div class="email" onclick="copyToClipboard('jingchengmo@foxmail.com')">
               <i class="fas fa-envelope"></i><span>jingchengmo@foxmail.com</span>
             </div>
           </div>
           <div class="person">
-            <img src="OY/avatar.jpg" alt="Graduate Student">
-            <p class="name">Junchi Ouyang 欧阳骏驰</p>
+            <a href="/people/OY/"><img src="OY/avatar.jpg" alt="Graduate Student"></a>
+            <p class="name"><a href="/people/OY/">Junchi Ouyang 欧阳骏驰</a></p>
             <p class="details">24 Master’s Student in Biomedical Engineering</p>
             <div class="email" onclick="copyToClipboard('oyjc_scut@126.com')">
               <i class="fas fa-envelope"></i><span>oyjc_scut@126.com</span>
             </div>
           </div>
           <div class="person">
-            <img src="LP/avatar.jpg" alt="Graduate Student">
-            <p class="name">Lipeng Luo 罗丽鹏</p>
+            <a href="/people/LP/"><img src="LP/avatar.jpg" alt="Graduate Student"></a>
+            <p class="name"><a href="/people/LP/">Lipeng Luo 罗丽鹏</a></p>
             <p class="details">24 Master’s Student in Biomedical Engineering</p>
             <div class="email" onclick="copyToClipboard('llp_scut@126.com')">
               <i class="fas fa-envelope"></i><span>llp_scut@126.com</span>
             </div>
           </div>
           <div class="person">
-            <img src="MT/avatar.jpg" alt="Graduate Student">
-            <p class="name">Meitang Peng 彭美堂</p>
+            <a href="/people/MT/"><img src="MT/avatar.jpg" alt="Graduate Student"></a>
+            <p class="name"><a href="/people/MT/">Meitang Peng 彭美堂</a></p>
             <p class="details">23 Master’s Student in Biomedical Engineering</p>
             <div class="email" onclick="copyToClipboard('meitangpeng@gmail.com')">
               <i class="fas fa-envelope"></i><span>meitangpeng@gmail.com</span>
             </div>
           </div>
           <div class="person">
-            <img src="GMT/avatar.jpg" alt="Graduate Student">
-            <p class="name">Mengting Guan 管梦婷</p>
+            <a href="/people/GMT/"><img src="GMT/avatar.jpg" alt="Graduate Student"></a>
+            <p class="name"><a href="/people/GMT/">Mengting Guan 管梦婷</a></p>
             <p class="details">24 Master’s Student in Pharmacy</p>
             <div class="email" onclick="copyToClipboard('gmt1923@163.com')">
               <i class="fas fa-envelope"></i><span>gmt1923@163.com</span>
             </div>
           </div>
           <div class="person">
-            <img src="SC/avatar.jpg" alt="Graduate Student">
-            <p class="name">Shicheng Lang 稂世成</p>
+            <a href="/people/SC/"><img src="SC/avatar.jpg" alt="Graduate Student"></a>
+            <p class="name"><a href="/people/SC/">Shicheng Lang 稂世成</a></p>
             <p class="details">24 PhD Student in Biomedical Engineering</p>
             <div class="email" onclick="copyToClipboard('920815351@qq.com')">
               <i class="fas fa-envelope"></i><span>920815351@qq.com</span>
             </div>
           </div>
           <div class="person">
-            <img src="YF/avatar.jpg" alt="Graduate Student">
-            <p class="name">Yifei Han 韩逸飞</p>
+            <a href="/people/YF/"><img src="YF/avatar.jpg" alt="Graduate Student"></a>
+            <p class="name"><a href="/people/YF/">Yifei Han 韩逸飞</a></p>
             <p class="details">25 Master's Student in Biomedical Engineering</p>
             <div class="email" onclick="copyToClipboard('2784331517@qq.com')">
               <i class="fas fa-envelope"></i><span>2784331517@qq.com</span>
             </div>
           </div>
           <div class="person">
-            <img src="YH/avatar.jpg" alt="Graduate Student">
-            <p class="name">Yinghao Liu 刘英豪</p>
+            <a href="/people/YH/"><img src="YH/avatar.jpg" alt="Graduate Student"></a>
+            <p class="name"><a href="/people/YH/">Yinghao Liu 刘英豪</a></p>
             <p class="details">23 Master’s Student in Chemistry</p>
             <div class="email" onclick="copyToClipboard('Yinghao612@gmail.com')">
               <i class="fas fa-envelope"></i><span>Yinghao612@gmail.com</span>
             </div>
           </div>
           <div class="person">
-            <img src="YJ/avatar.jpg" alt="Graduate Student">
-            <p class="name">Yujian Liu 刘宇健</p>
+            <a href="/people/YJ/"><img src="YJ/avatar.jpg" alt="Graduate Student"></a>
+            <p class="name"><a href="/people/YJ/">Yujian Liu 刘宇健</a></p>
             <p class="details">23 Master’s Student in Biomedical Engineering</p>
             <div class="email" onclick="copyToClipboard('liuyujian0408@gmail.com')">
               <i class="fas fa-envelope"></i><span>liuyujian0408@gmail.com</span>
@@ -240,7 +247,7 @@ sections:
         </div>
 
         ---
-      
+
         ## Undergraduate Students
 
         <table style="width:100%; border-collapse: collapse; border: none;">
