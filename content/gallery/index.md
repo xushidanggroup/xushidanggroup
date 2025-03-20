@@ -365,10 +365,17 @@
         if (newScale < 1) return; // 不允许缩小到小于初始比例
         if (newScale > 3) return; // 限制最大放大比例
 
-        scale = newScale;
+        // 计算缩放后的偏移量
         offsetX = (offsetX + mouseX - rect.width / 2) * delta - (mouseX - rect.width / 2);
         offsetY = (offsetY + mouseY - rect.height / 2) * delta - (mouseY - rect.height / 2);
 
+        // 限制偏移量，确保图片始终在模态框内
+        const maxOffsetX = (rect.width * (newScale - 1)) / 2;
+        const maxOffsetY = (rect.height * (newScale - 1)) / 2;
+        offsetX = Math.min(Math.max(offsetX, -maxOffsetX), maxOffsetX);
+        offsetY = Math.min(Math.max(offsetY, -maxOffsetY), maxOffsetY);
+
+        scale = newScale;
         modalImage.style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
     });
 
@@ -386,9 +393,20 @@
 
     document.addEventListener('mousemove', (e) => {
         if (isDragging) {
+            const modalImage = document.getElementById('modalImage');
+            const rect = modalImage.getBoundingClientRect();
+
+            // 计算新的偏移量
             offsetX = initialOffsetX + (e.clientX - startX);
             offsetY = initialOffsetY + (e.clientY - startY);
-            document.getElementById('modalImage').style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
+
+            // 限制偏移量，确保图片始终在模态框内
+            const maxOffsetX = (rect.width * (scale - 1)) / 2;
+            const maxOffsetY = (rect.height * (scale - 1)) / 2;
+            offsetX = Math.min(Math.max(offsetX, -maxOffsetX), maxOffsetX);
+            offsetY = Math.min(Math.max(offsetY, -maxOffsetY), maxOffsetY);
+
+            modalImage.style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
         }
     });
 
