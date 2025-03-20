@@ -9,6 +9,11 @@
         text-align: center;
         margin-bottom: 20px;
     }
+    h2 {
+        text-align: center;
+        margin: 20px 0 10px;
+        color: #333;
+    }
     .gallery-thumbnails {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -71,9 +76,9 @@
         display: block;
         margin: 0 auto;
         transform-origin: center;
-        transition: transform 0.1s ease-out; /* 优化拖拽平滑度 */
+        transition: transform 0.1s ease-out;
         cursor: grab;
-        user-select: none; /* 防止拖拽时选中图片 */
+        user-select: none;
     }
     .modal-nav {
         position: absolute;
@@ -124,7 +129,10 @@
 </style>
 
 <h1>Gallery</h1>
-<div class="gallery-thumbnails" id="thumbnailContainer"></div>
+<h2>2024</h2>
+<div class="gallery-thumbnails" id="thumbnails2024"></div>
+<h2>2025</h2>
+<div class="gallery-thumbnails" id="thumbnails2025"></div>
 
 <div class="modal" id="modal">
     <div class="modal-content">
@@ -156,11 +164,20 @@
         alt: fileName.replace(/_/g, ' ').replace(/\..+$/, '')
     }));
 
+    // 按年份分组
+    const images2024 = images.slice(0, Math.ceil(images.length / 2)); // 前一半为 2024 年
+    const images2025 = images.slice(Math.ceil(images.length / 2));    // 后一半为 2025 年
+
     // 生成缩略图
     function generateThumbnails() {
-        const container = document.getElementById('thumbnailContainer');
+        generateThumbnailsForYear(images2024, 'thumbnails2024');
+        generateThumbnailsForYear(images2025, 'thumbnails2025');
+    }
+
+    function generateThumbnailsForYear(yearImages, containerId) {
+        const container = document.getElementById(containerId);
         container.innerHTML = '';
-        images.forEach((img, index) => {
+        yearImages.forEach((img, index) => {
             const thumbnail = document.createElement('div');
             thumbnail.className = 'thumbnail-container';
             const loadingText = document.createElement('div');
@@ -175,7 +192,9 @@
                 imageElement.classList.add('loaded');
                 loadingText.style.display = 'none';
             };
-            thumbnail.onclick = () => openModal(index);
+            // 计算全局索引
+            const globalIndex = containerId === 'thumbnails2024' ? index : index + images2024.length;
+            thumbnail.onclick = () => openModal(globalIndex);
             thumbnail.appendChild(imageElement);
             container.appendChild(thumbnail);
         });
@@ -271,12 +290,11 @@
         modalImage.style.cursor = scale > 1 ? 'grab' : 'default';
     }
 
-    // 滚轮缩放
     document.getElementById('modal').addEventListener('wheel', (e) => {
         e.preventDefault();
         const delta = e.deltaY > 0 ? -0.1 : 0.1;
         const newScale = scale + delta;
-        scale = Math.min(Math.max(1, newScale), 4);
+        scale = Math.min(Math.max(1, newScale), 3);
         if (scale <= 1) {
             resetImageTransform();
         } else {
@@ -286,7 +304,6 @@
         }
     });
 
-    // 拖拽开始
     document.getElementById('modalImage').addEventListener('mousedown', (e) => {
         if (scale <= 1) return;
         e.preventDefault();
@@ -295,10 +312,9 @@
         startX = e.clientX / scale - translateX;
         startY = e.clientY / scale - translateY;
         document.getElementById('modalImage').style.cursor = 'grabbing';
-        document.getElementById('modalImage').style.transition = 'none'; // 拖拽时禁用过渡
+        document.getElementById('modalImage').style.transition = 'none';
     });
 
-    // 拖拽中
     document.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
         const rect = document.getElementById('modalImage').getBoundingClientRect();
@@ -308,16 +324,14 @@
         applyTransform();
     });
 
-    // 拖拽结束
     document.addEventListener('mouseup', () => {
         if (isDragging) {
             isDragging = false;
             document.getElementById('modalImage').style.cursor = 'grab';
-            document.getElementById('modalImage').style.transition = 'transform 0.1s ease-out'; // 恢复过渡
+            document.getElementById('modalImage').style.transition = 'transform 0.1s ease-out';
         }
     });
 
-    // 限制平移范围，确保图片边缘不脱离模态框
     function restrictTranslate() {
         const modalContent = document.querySelector('.modal-content');
         const modalImage = document.getElementById('modalImage');
@@ -326,17 +340,14 @@
         const scaledWidth = imgRect.width * scale;
         const scaledHeight = imgRect.height * scale;
 
-        // 如果缩放后图片小于模态框，重置平移
         if (scaledWidth <= modalRect.width) translateX = 0;
         if (scaledHeight <= modalRect.height) translateY = 0;
 
-        // 计算平移范围，确保图片边缘不脱离模态框
         const minTranslateX = (modalRect.width - scaledWidth) / (2 * scale);
         const maxTranslateX = -minTranslateX;
         const minTranslateY = (modalRect.height - scaledHeight) / (2 * scale);
         const maxTranslateY = -minTranslateY;
 
-        // 限制平移值
         if (scaledWidth > modalRect.width) {
             translateX = Math.max(Math.min(translateX, maxTranslateX), minTranslateX);
         } else {
