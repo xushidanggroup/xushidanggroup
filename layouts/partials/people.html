@@ -1,0 +1,155 @@
+<!-- layouts/partials/people.html -->
+<style>
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: flex-start;
+    }
+    .person {
+      flex: 1 1 calc(20% - 20px);
+      max-width: calc(20% - 20px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .person img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+    .person p {
+      margin: 0;
+    }
+    .person .name {
+      font-size: 14px;
+    }
+    .person .details {
+      font-size: 12px;
+    }
+    .person .email, .person .scholar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+    .person .email .fa-envelope, .person .scholar .fa-graduation-cap {
+      margin-right: 5px;
+    }
+    .person .email span, .person .scholar span {
+      display: none;
+      font-size: 12px;
+    }
+    .person .email:hover span, .person .scholar:hover span {
+      display: inline;
+    }
+    .person a {
+      text-decoration: none;
+      color: inherit;
+    }
+    .person a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 1200px) {
+      .person {
+        flex: 1 1 calc(25% - 20px);
+        max-width: calc(25% - 20px);
+      }
+    }
+    @media (max-width: 992px) {
+      .person {
+        flex: 1 1 calc(33.33% - 20px);
+        max-width: calc(33.33% - 20px);
+      }
+    }
+    @media (max-width: 768px) {
+      .person {
+        flex: 1 1 calc(50% - 20px);
+        max-width: calc(50% - 20px);
+      }
+    }
+    @media (max-width: 576px) {
+      .person {
+        flex: 1 1 100%;
+        max-width: 100%;
+      }
+    }
+  </style>
+  <script>
+    function copyToClipboard(email) {
+      navigator.clipboard.writeText(email).then(function() {
+        alert('Email copied to clipboard: ' + email);
+      }, function(err) {
+        console.error('Could not copy text: ', err);
+      });
+    }
+  </script>
+  
+  <h2>Principle Investigator</h2>
+  <div class="container">
+    {{ range .Site.Data.people.principle_investigator }}
+    <div class="person">
+      <a href="/people/{{ .folder }}/"><img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}"></a>
+      <p class="name"><a href="/people/{{ .folder }}/">{{ .name }}</a></p>
+      <p class="details">{{ .role }}</p>
+      {{ if .email }}
+      <div class="email" onclick="copyToClipboard('{{ .email }}')">
+        <i class="fas fa-envelope"></i><span>{{ .email }}</span>
+      </div>
+      {{ end }}
+      {{ if .scholar }}
+      <div class="scholar" onclick="window.open('{{ .scholar }}')">
+        <i class="fas fa-graduation-cap"></i><span>Google Scholar</span>
+      </div>
+      {{ end }}
+    </div>
+    {{ end }}
+  </div>
+  
+  <h2>Graduate Students</h2>
+  <div class="container">
+    {{ range .Site.Data.people.graduate_students }}
+    <div class="person">
+      <a href="/people/{{ .folder }}/"><img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}"></a>
+      <p class="name"><a href="/people/{{ .folder }}/">{{ .name }}</a></p>
+      <p class="details">{{ .role }}</p>
+      {{ if .email }}
+      <div class="email" onclick="copyToClipboard('{{ .email }}')">
+        <i class="fas fa-envelope"></i><span>{{ .email }}</span>
+      </div>
+      {{ end }}
+      {{ if .scholar }}
+      <div class="scholar" onclick="window.open('{{ .scholar }}')">
+        <i class="fas fa-graduation-cap"></i><span>Google Scholar</span>
+      </div>
+      {{ end }}
+    </div>
+    {{ end }}
+  </div>
+  
+  <h2>Undergraduate Students</h2>
+  <table style="width:100%; border-collapse: collapse; border: none;">
+    {{ range .Site.Data.people.undergraduate_students }}
+    <tr>
+      <td style="width: 20%; padding: 8px; vertical-align: middle;">{{ .name }}</td>
+      <td style="width: 35%; padding: 8px; vertical-align: middle;">{{ .role }}</td>
+      <td style="width: 45%; padding: 8px; vertical-align: middle;"></td>
+    </tr>
+    {{ end }}
+  </table>
+  
+  <h2>Alumni</h2>
+  <table style="width:100%; border-collapse: collapse; border: none;">
+    {{ range .Site.Data.people.alumni }}
+    <tr>
+      <td style="width: 20%; padding: 8px; vertical-align: middle;">{{ .name }}</td>
+      <td style="width: 35%; padding: 8px; vertical-align: middle;">{{ .role }}</td>
+      <td style="width: 45%; padding: 8px; vertical-align: middle;">{{ .current }}</td>
+    </tr>
+    {{ end }}
+  </table>
