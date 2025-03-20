@@ -1,133 +1,3 @@
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-    }
-    h1 {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    h2 {
-        text-align: center;
-        margin: 20px 0 10px;
-        color: #333;
-    }
-    .gallery-thumbnails {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 15px;
-        padding: 20px;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-    .thumbnail-container {
-        position: relative;
-        cursor: pointer;
-        overflow: hidden;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        background: #e0e0e0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .thumbnail-container img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 8px;
-        opacity: 0;
-        transition: opacity 0.3s ease-in-out;
-    }
-    .thumbnail-container img.loaded {
-        opacity: 1;
-    }
-    .thumbnail-container .loading-text {
-        position: absolute;
-        font-size: 14px;
-        color: #666;
-    }
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.8);
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-    .modal-content {
-        position: relative;
-        max-width: 90%;
-        max-height: 90%;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-    }
-    .modal-content img {
-        max-width: 100%;
-        max-height: 80vh;
-        display: block;
-        margin: 0 auto;
-        transform-origin: center;
-        transition: transform 0.1s ease-out;
-        cursor: grab;
-        user-select: none;
-    }
-    .modal-nav {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background-color: rgba(0, 0, 0, 0.5);
-        color: white;
-        border: none;
-        font-size: 2em;
-        padding: 10px 20px;
-        cursor: pointer;
-        z-index: 1;
-        border-radius: 50%;
-    }
-    .modal-nav.left { left: 20px; }
-    .modal-nav.right { right: 20px; }
-    .close-modal {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background-color: rgba(0, 0, 0, 0.5);
-        color: white;
-        border: none;
-        font-size: 1.5em;
-        padding: 5px 10px;
-        cursor: pointer;
-        border-radius: 50%;
-    }
-    .modal-loading {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 2;
-    }
-    .modal-loading .spinner {
-        border: 4px solid rgba(0, 0, 0, 0.1);
-        border-top: 4px solid #2196F3;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        animation: spin 1s linear infinite;
-    }
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-</style>
-
 <h1>Gallery</h1>
 <!-- 年份容器将动态生成 -->
 
@@ -177,51 +47,40 @@
 
     // 生成缩略图
     function generateThumbnails() {
-        try {
-            const years = [...new Set(images.map(img => img.year))].sort();
-            const body = document.body;
+        const years = [...new Set(images.map(img => img.year))].sort();
+        const body = document.body;
 
-            console.log('Years detected:', years); // 调试：检查年份数组
+        years.forEach(year => {
+            const yearTitle = document.createElement('h2');
+            yearTitle.textContent = year;
+            body.insertBefore(yearTitle, document.getElementById('modal'));
 
-            years.forEach(year => {
-                const yearTitle = document.createElement('h2');
-                yearTitle.textContent = year;
-                body.insertBefore(yearTitle, document.getElementById('modal'));
+            const container = document.createElement('div');
+            container.className = 'gallery-thumbnails';
+            container.id = `thumbnails${year}`;
+            body.insertBefore(container, document.getElementById('modal'));
 
-                const container = document.createElement('div');
-                container.className = 'gallery-thumbnails';
-                container.id = `thumbnails${year}`;
-                body.insertBefore(container, document.getElementById('modal'));
-
-                const yearImages = images.filter(img => img.year === year);
-                console.log(`Images for ${year}:`, yearImages.length); // 调试：检查每年的图片数量
-
-                yearImages.forEach(img => {
-                    const thumbnail = document.createElement('div');
-                    thumbnail.className = 'thumbnail-container';
-                    const loadingText = document.createElement('div');
-                    loadingText.className = 'loading-text';
-                    loadingText.textContent = 'loading';
-                    thumbnail.appendChild(loadingText);
-                    const imageElement = document.createElement('img');
-                    imageElement.loading = 'lazy';
-                    imageElement.src = img.thumbSrc;
-                    imageElement.alt = `Thumbnail ${img.alt}`;
-                    imageElement.onload = () => {
-                        imageElement.classList.add('loaded');
-                        loadingText.style.display = 'none';
-                    };
-                    imageElement.onerror = () => {
-                        console.error(`Failed to load image: ${img.thumbSrc}`);
-                    };
-                    thumbnail.onclick = () => openModal(img.index);
-                    thumbnail.appendChild(imageElement);
-                    container.appendChild(thumbnail);
-                });
+            const yearImages = images.filter(img => img.year === year);
+            yearImages.forEach(img => {
+                const thumbnail = document.createElement('div');
+                thumbnail.className = 'thumbnail-container';
+                const loadingText = document.createElement('div');
+                loadingText.className = 'loading-text';
+                loadingText.textContent = 'loading';
+                thumbnail.appendChild(loadingText);
+                const imageElement = document.createElement('img');
+                imageElement.loading = 'lazy';
+                imageElement.src = img.thumbSrc;
+                imageElement.alt = `Thumbnail ${img.alt}`;
+                imageElement.onload = () => {
+                    imageElement.classList.add('loaded');
+                    loadingText.style.display = 'none';
+                };
+                thumbnail.onclick = () => openModal(img.index);
+                thumbnail.appendChild(imageElement);
+                container.appendChild(thumbnail);
             });
-        } catch (error) {
-            console.error('Error in generateThumbnails:', error);
-        }
+        });
     }
 
     // 打开模态框
@@ -241,9 +100,6 @@
             modalImage.style.opacity = 1;
             modalLoading.style.display = 'none';
             resetImageTransform();
-        };
-        img.onerror = () => {
-            console.error(`Failed to load modal image: ${img.src}`);
         };
     }
 
@@ -290,10 +146,7 @@
     });
 
     // 初始化
-    document.addEventListener('DOMContentLoaded', () => {
-        console.log('DOM fully loaded, generating thumbnails...');
-        generateThumbnails();
-    });
+    document.addEventListener('DOMContentLoaded', generateThumbnails);
 
     // 缩放和拖拽逻辑
     let scale = 1;
