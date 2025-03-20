@@ -129,10 +129,10 @@
 </style>
 
 <h1>Gallery</h1>
-<h2>2024</h2>
-<div class="gallery-thumbnails" id="thumbnails2024"></div>
 <h2>2025</h2>
 <div class="gallery-thumbnails" id="thumbnails2025"></div>
+<h2>2024</h2>
+<div class="gallery-thumbnails" id="thumbnails2024"></div>
 
 <div class="modal" id="modal">
     <div class="modal-content">
@@ -184,8 +184,8 @@
 
     // 生成缩略图
     function generateThumbnails() {
-        generateThumbnailsForYear(images2024, 'thumbnails2024');
-        generateThumbnailsForYear(images2025, 'thumbnails2025');
+        generateThumbnailsForYear(images2025, 'thumbnails2025'); // 先生成 2025 年
+        generateThumbnailsForYear(images2024, 'thumbnails2024'); // 再生成 2024 年
     }
 
     function generateThumbnailsForYear(yearImages, containerId) {
