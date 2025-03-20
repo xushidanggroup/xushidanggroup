@@ -1,3 +1,133 @@
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    h2 {
+        text-align: center;
+        margin: 20px 0 10px;
+        color: #333;
+    }
+    .gallery-thumbnails {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .thumbnail-container {
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background: #e0e0e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .thumbnail-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 8px;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+    .thumbnail-container img.loaded {
+        opacity: 1;
+    }
+    .thumbnail-container .loading-text {
+        position: absolute;
+        font-size: 14px;
+        color: #666;
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+    .modal-content {
+        position: relative;
+        max-width: 90%;
+        max-height: 90%;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+    }
+    .modal-content img {
+        max-width: 100%;
+        max-height: 80vh;
+        display: block;
+        margin: 0 auto;
+        transform-origin: center;
+        transition: transform 0.1s ease-out;
+        cursor: grab;
+        user-select: none;
+    }
+    .modal-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        font-size: 2em;
+        padding: 10px 20px;
+        cursor: pointer;
+        z-index: 1;
+        border-radius: 50%;
+    }
+    .modal-nav.left { left: 20px; }
+    .modal-nav.right { right: 20px; }
+    .close-modal {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        font-size: 1.5em;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 50%;
+    }
+    .modal-loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+    }
+    .modal-loading .spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-top: 4px solid #2196F3;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+
 <h1>Gallery</h1>
 <!-- 年份容器将动态生成 -->
 
