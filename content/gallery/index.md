@@ -129,7 +129,10 @@
 </style>
 
 <h1>Gallery</h1>
-<!-- 年份容器将动态生成 -->
+<h2>2024</h2>
+<div class="gallery-thumbnails" id="thumbnails2024"></div>
+<h2>2025</h2>
+<div class="gallery-thumbnails" id="thumbnails2025"></div>
 
 <div class="modal" id="modal">
     <div class="modal-content">
@@ -148,68 +151,52 @@
     const thumbnailBasePath = '/thumbnails/';
     const imageBasePath = '/images/';
     const imageFiles = [
-        { fileName: '1_清远漂流.jpg', year: 2024 },
-        { fileName: '2_冬至.jpg', year: 2024 },
-        { fileName: '3_石门1.jpg', year: 2024 },
-        { fileName: '4_石门2.jpg', year: 2024 },
-        { fileName: '5_石门3.jpg', year: 2024 },
-        { fileName: '6_石门4.jpg', year: 2024 },
-        { fileName: '7_红林花海.jpg', year: 2024 },
-        { fileName: '8_羽毛球赛.jpg', year: 2024 },
-        { fileName: '9_课题组合照_2024.jpg', year: 2024 },
-        { fileName: '10_毕业典礼合照.jpg', year: 2024 },
-        { fileName: '11_龙林毕业聚餐_2024.jpg', year: 2024 },
-        { fileName: '12_大南山1.jpg', year: 2025 },
-        { fileName: '13_大南山2.jpg', year: 2025 },
-        { fileName: '14_大南山3.jpg', year: 2025 },
-        { fileName: '15_大南山4.jpg', year: 2025 },
-        { fileName: '16_大南山5.jpg', year: 2025 },
-        { fileName: '17_大南山6.jpg', year: 2025 }
+        '1_清远漂流.jpg', '2_冬至.jpg', '3_石门1.jpg', '4_石门2.jpg',
+        '5_石门3.jpg', '6_石门4.jpg', '7_红林花海.jpg', '8_羽毛球赛.jpg',
+        '9_课题组合照_2024.jpg', '10_毕业典礼合照.jpg', '11_龙林毕业聚餐_2024.jpg',
+        '12_大南山1.jpg', '13_大南山2.jpg', '14_大南山3.jpg', '15_大南山4.jpg',
+        '16_大南山5.jpg', '17_大南山6.jpg'
     ];
 
-    const images = imageFiles.map((item, index) => ({
-        thumbSrc: thumbnailBasePath + item.fileName.replace(/\.(jpg|jpeg|png|webp)$/, '_t.$1'),
-        src: imageBasePath + item.fileName,
-        alt: item.fileName.replace(/_/g, ' ').replace(/\..+$/, ''),
-        year: item.year,
-        index: index
+    const images = imageFiles.map(fileName => ({
+        thumbSrc: thumbnailBasePath + fileName.replace(/\.(jpg|jpeg|png|webp)$/, '_t.$1'),
+        src: imageBasePath + fileName,
+        alt: fileName.replace(/_/g, ' ').replace(/\..+$/, '')
     }));
+
+    // 按年份分组
+    const images2024 = images.slice(0, Math.ceil(images.length / 2)); // 前一半为 2024 年
+    const images2025 = images.slice(Math.ceil(images.length / 2));    // 后一半为 2025 年
 
     // 生成缩略图
     function generateThumbnails() {
-        const years = [...new Set(images.map(img => img.year))].sort();
-        const body = document.body;
+        generateThumbnailsForYear(images2024, 'thumbnails2024');
+        generateThumbnailsForYear(images2025, 'thumbnails2025');
+    }
 
-        years.forEach(year => {
-            const yearTitle = document.createElement('h2');
-            yearTitle.textContent = year;
-            body.insertBefore(yearTitle, document.getElementById('modal'));
-
-            const container = document.createElement('div');
-            container.className = 'gallery-thumbnails';
-            container.id = `thumbnails${year}`;
-            body.insertBefore(container, document.getElementById('modal'));
-
-            const yearImages = images.filter(img => img.year === year);
-            yearImages.forEach(img => {
-                const thumbnail = document.createElement('div');
-                thumbnail.className = 'thumbnail-container';
-                const loadingText = document.createElement('div');
-                loadingText.className = 'loading-text';
-                loadingText.textContent = 'loading';
-                thumbnail.appendChild(loadingText);
-                const imageElement = document.createElement('img');
-                imageElement.loading = 'lazy';
-                imageElement.src = img.thumbSrc;
-                imageElement.alt = `Thumbnail ${img.alt}`;
-                imageElement.onload = () => {
-                    imageElement.classList.add('loaded');
-                    loadingText.style.display = 'none';
-                };
-                thumbnail.onclick = () => openModal(img.index);
-                thumbnail.appendChild(imageElement);
-                container.appendChild(thumbnail);
-            });
+    function generateThumbnailsForYear(yearImages, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        yearImages.forEach((img, index) => {
+            const thumbnail = document.createElement('div');
+            thumbnail.className = 'thumbnail-container';
+            const loadingText = document.createElement('div');
+            loadingText.className = 'loading-text';
+            loadingText.innerText = 'loading';
+            thumbnail.appendChild(loadingText);
+            const imageElement = document.createElement('img');
+            imageElement.loading = 'lazy';
+            imageElement.src = img.thumbSrc;
+            imageElement.alt = `Thumbnail ${img.alt}`;
+            imageElement.onload = () => {
+                imageElement.classList.add('loaded');
+                loadingText.style.display = 'none';
+            };
+            // 计算全局索引
+            const globalIndex = containerId === 'thumbnails2024' ? index : index + images2024.length;
+            thumbnail.onclick = () => openModal(globalIndex);
+            thumbnail.appendChild(imageElement);
+            container.appendChild(thumbnail);
         });
     }
 
