@@ -72,7 +72,7 @@
         margin: 0 auto;
         transform-origin: center;
         transition: transform 0.2s ease;
-        cursor: default;
+        cursor: grab;
     }
     .modal-nav {
         position: absolute;
@@ -197,8 +197,6 @@
             modalImage.style.opacity = 1;
             modalLoading.style.display = 'none';
             resetImageTransform();
-            isZoomed = false;
-            updateCursorStyle();
         };
     }
 
@@ -231,8 +229,6 @@
             modalImage.style.opacity = 1;
             modalLoading.style.display = 'none';
             resetImageTransform();
-            isZoomed = false;
-            updateCursorStyle();
         };
     }
 
@@ -255,13 +251,13 @@
     let translateY = 0;
     let isDragging = false;
     let startX, startY;
-    let isZoomed = false;
 
     function resetImageTransform() {
         scale = 1;
         translateX = 0;
         translateY = 0;
         applyTransform();
+        updateCursorStyle();
     }
 
     function applyTransform() {
@@ -271,22 +267,27 @@
 
     function updateCursorStyle() {
         const modalImage = document.getElementById('modalImage');
-        modalImage.style.cursor = isZoomed ? 'grab' : 'default';
+        modalImage.style.cursor = scale > 1 ? 'grab' : 'default';
     }
 
     // 滚轮缩放
     document.getElementById('modal').addEventListener('wheel', (e) => {
-        if (!isZoomed) return;
         e.preventDefault();
         const delta = e.deltaY > 0 ? -0.1 : 0.1;
-        scale = Math.min(Math.max(1, scale + delta), 3);
-        restrictTranslate();
-        applyTransform();
+        const newScale = scale + delta;
+        scale = Math.min(Math.max(1, newScale), 3); // 限制缩放范围 1 - 3
+        if (scale <= 1) {
+            resetImageTransform(); // 滚轮向后滚到小于等于1时重置
+        } else {
+            restrictTranslate();
+            applyTransform();
+            updateCursorStyle();
+        }
     });
 
     // 拖拽开始
     document.getElementById('modalImage').addEventListener('mousedown', (e) => {
-        if (!isZoomed) return;
+        if (scale <= 1) return; // 未放大时不可拖拽
         e.preventDefault();
         isDragging = true;
         startX = e.clientX - translateX;
@@ -306,25 +307,10 @@
     // 拖拽结束
     document.addEventListener('mouseup', () => {
         isDragging = false;
-        if (isZoomed) document.getElementById('modalImage').style.cursor = 'grab';
+        if (scale > 1) document.getElementById('modalImage').style.cursor = 'grab';
     });
 
-    // 双击切换放大状态
-    document.getElementById('modalImage').addEventListener('dblclick', () => {
-        if (!isZoomed) {
-            scale = 1.5;
-            isZoomed = true;
-        } else {
-            scale = 1;
-            translateX = 0;
-            translateY = 0;
-            isZoomed = false;
-        }
-        applyTransform();
-        updateCursorStyle();
-    });
-
-    // 限制平移范围
+    // 限制平移范围，确保图片填充模态框
     function restrictTranslate() {
         const modalContent = document.querySelector('.modal-content');
         const modalImage = document.getElementById('modalImage');
@@ -333,10 +319,24 @@
         const scaledWidth = imgRect.width * scale;
         const scaledHeight = imgRect.height * scale;
 
-        const maxTranslateX = Math.max(0, (scaledWidth - modalRect.width) / 2 / scale);
-        const maxTranslateY = Math.max(0, (scaledHeight - modalRect.height) / 2 / scale);
+        // 计算平移的最大和最小值
+        const maxTranslateX = (scaledWidth - modalRect.width) / 2 / scale;
+        const maxTranslateY = (scaledHeight - modalRect.height) / 2 / scale;
 
-        translateX = Math.min(Math.max(translateX, -maxTranslateX), maxTranslateX);
-        translateY = Math.min(Math.max(translateY, -maxTranslateY), maxTranslateY);
+        // 如果缩放后图片小于模态框，重置平移
+        if (scaledWidth <= modalRect.width) translateX = 0;
+        if (scaledHeight <= modalRect.height) translateY = 0;
+
+        // 限制平移范围，确保图片填充模态框
+        if (maxTranslateX > 0) {
+            translateX = Math.min(Math.max(translateX, -maxTranslateX), maxTranslateX);
+        } else {
+            translateX = 0;
+        }
+        if (maxTranslateY > 0) {
+            translateY = Math.min(Math.max(translateY, -maxTranslateY), maxTranslateY);
+        } else {
+            translateY = 0;
+        }
     }
 </script>
