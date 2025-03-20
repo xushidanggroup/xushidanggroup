@@ -80,7 +80,6 @@
         border-radius: 8px;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
         overflow: hidden;
-        cursor: grab;
     }
 
     .modal-content img {
@@ -88,8 +87,9 @@
         max-height: 80vh;
         display: block;
         margin: 0 auto;
-        transition: transform 0.1s ease;
-        cursor: grab;
+        transform-origin: center; /* 缩放以中心为基准 */
+        transition: transform 0.2s ease; /* 平滑缩放和拖拽 */
+        cursor: grab; /* 默认鼠标样式 */
     }
 
     /* 模态框中的导航按钮 */
@@ -159,10 +159,10 @@
 <!-- 模态框 -->
 <div class="modal" id="modal">
     <div class="modal-content">
-        <button class="close-modal" onclick="closeModal()">&times;</button>
+        <button class="close-modal" onclick="closeModal()">×</button>
         <img src="" alt="Main Image" id="modalImage">
-        <button class="modal-nav left" onclick="showPreviousImage()">&#10094;</button>
-        <button class="modal-nav right" onclick="showNextImage()">&#10095;</button>
+        <button class="modal-nav left" onclick="showPreviousImage()">❮</button>
+        <button class="modal-nav right" onclick="showNextImage()">❯</button>
         <!-- 模态框加载动画 -->
         <div class="modal-loading" id="modalLoading">
             <div class="spinner"></div>
@@ -173,13 +173,6 @@
 <script>
     let currentIndex = 0;
     let isPreloading = true; // 是否允许预加载
-    let preloadIndex = 0; // 当前预加载的图片索引
-    let scale = 1; // 图片缩放比例
-    let offsetX = 0; // 图片水平偏移量
-    let offsetY = 0; // 图片垂直偏移量
-    let isDragging = false; // 是否正在拖拽
-    let startX, startY, initialOffsetX, initialOffsetY; // 拖拽起始位置和初始偏移量
-
     const thumbnailBasePath = '/thumbnails/';
     const imageBasePath = '/images/';
     const imageFiles = [
@@ -203,8 +196,8 @@
     ];
 
     const images = imageFiles.map(fileName => ({
-        thumbSrc: `${thumbnailBasePath}${fileName.replace(/\.(jpg|jpeg|png|webp)$/, '_t.$1')}`,
-        src: `${imageBasePath}${fileName}`,
+        thumbSrc: thumbnailBasePath + fileName.replace(/\.(jpg|jpeg|png|webp)$/, '_t.$1'),
+        src: imageBasePath + fileName,
         alt: fileName.replace(/_/g, ' ').replace(/\..+$/, '')
     }));
 
@@ -248,15 +241,20 @@
 
     // 开始预加载大图
     function startPreloading() {
-        if (preloadIndex >= images.length || !isPreloading) return;
+        let preloadIndex = 0;
+        const preloadNext = () => {
+            if (preloadIndex >= images.length || !isPreloading) return;
 
-        const img = new Image();
-        img.src = images[preloadIndex].src;
-        img.onload = () => {
-            console.log(`预加载完成: ${images[preloadIndex].src}`);
-            preloadIndex++;
-            startPreloading(); // 继续预加载下一张
+            const img = new Image();
+            img.src = images[preloadIndex].src;
+            img.onload = () => {
+                console.log(`预加载完成: ${images[preloadIndex].src}`);
+                preloadIndex++;
+                preloadNext(); // 继续预加载下一张
+            };
         };
+
+        preloadNext();
     }
 
     // 打开模态框
@@ -266,12 +264,6 @@
         const modal = document.getElementById('modal');
         const modalImage = document.getElementById('modalImage');
         const modalLoading = document.getElementById('modalLoading');
-
-        // 重置缩放和偏移
-        scale = 1;
-        offsetX = 0;
-        offsetY = 0;
-        modalImage.style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
 
         // 显示模态框和加载动画
         modal.style.display = 'flex';
@@ -287,6 +279,9 @@
             modalImage.style.opacity = 1;
             modalLoading.style.display = 'none';
 
+            // 重置缩放和位置
+            resetImageTransform();
+
             // 当前大图加载完成后，恢复预加载
             isPreloading = true;
             startPreloading();
@@ -299,10 +294,7 @@
         const modalImage = document.getElementById('modalImage');
         modal.style.display = 'none';
         modalImage.src = '';
-
-        // 恢复预加载
-        isPreloading = true;
-        startPreloading();
+        resetImageTransform();
     }
 
     // 切换到上一张图片
@@ -322,12 +314,6 @@
         const modalImage = document.getElementById('modalImage');
         const modalLoading = document.getElementById('modalLoading');
 
-        // 重置缩放和偏移
-        scale = 1;
-        offsetX = 0;
-        offsetY = 0;
-        modalImage.style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
-
         // 显示加载动画
         modalLoading.style.display = 'block';
         modalImage.style.opacity = 0;
@@ -340,82 +326,11 @@
             modalImage.alt = images[index].alt;
             modalImage.style.opacity = 1;
             modalLoading.style.display = 'none';
+
+            // 重置缩放和位置
+            resetImageTransform();
         };
     }
-
-    // 点击模态框外关闭模态框
-    document.getElementById('modal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('modal')) {
-            closeModal();
-        }
-    });
-
-    // 鼠标滚轮放大
-    document.getElementById('modalImage').addEventListener('wheel', (e) => {
-        e.preventDefault();
-        const modalImage = document.getElementById('modalImage');
-        const rect = modalImage.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-
-        const delta = e.deltaY < 0 ? 1.1 : 0.9; // 滚轮向上放大，向下缩小
-        const newScale = scale * delta;
-
-        // 限制缩放范围
-        if (newScale < 1) return; // 不允许缩小到小于初始比例
-        if (newScale > 3) return; // 限制最大放大比例
-
-        // 计算缩放后的偏移量
-        offsetX = (offsetX + mouseX - rect.width / 2) * delta - (mouseX - rect.width / 2);
-        offsetY = (offsetY + mouseY - rect.height / 2) * delta - (mouseY - rect.height / 2);
-
-        // 限制偏移量，确保图片始终在模态框内
-        const maxOffsetX = (rect.width * (newScale - 1)) / 2;
-        const maxOffsetY = (rect.height * (newScale - 1)) / 2;
-        offsetX = Math.min(Math.max(offsetX, -maxOffsetX), maxOffsetX);
-        offsetY = Math.min(Math.max(offsetY, -maxOffsetY), maxOffsetY);
-
-        scale = newScale;
-        modalImage.style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
-    });
-
-    // // 按住左键拖拽图片
-    // document.getElementById('modalImage').addEventListener('mousedown', (e) => {
-    //     if (e.button === 0) { // 左键
-    //         isDragging = true;
-    //         startX = e.clientX;
-    //         startY = e.clientY;
-    //         initialOffsetX = offsetX;
-    //         initialOffsetY = offsetY;
-    //         document.getElementById('modalImage').style.cursor = 'grabbing';
-    //     }
-    // });
-
-    // document.addEventListener('mousemove', (e) => {
-    //     if (isDragging) {
-    //         const modalImage = document.getElementById('modalImage');
-    //         const rect = modalImage.getBoundingClientRect();
-
-    //         // 计算新的偏移量
-    //         offsetX = initialOffsetX + (e.clientX - startX);
-    //         offsetY = initialOffsetY + (e.clientY - startY);
-
-    //         // 限制偏移量，确保图片始终在模态框内
-    //         const maxOffsetX = (rect.width * (scale - 1)) / 2;
-    //         const maxOffsetY = (rect.height * (scale - 1)) / 2;
-    //         offsetX = Math.min(Math.max(offsetX, -maxOffsetX), maxOffsetX);
-    //         offsetY = Math.min(Math.max(offsetY, -maxOffsetY), maxOffsetY);
-
-    //         modalImage.style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
-    //     }
-    // });
-
-    document.addEventListener('mouseup', () => {
-        if (isDragging) {
-            isDragging = false;
-            document.getElementById('modalImage').style.cursor = 'grab';
-        }
-    });
 
     // 键盘切换功能
     document.addEventListener('keydown', (e) => {
@@ -430,5 +345,63 @@
     // 初始化
     document.addEventListener('DOMContentLoaded', () => {
         generateThumbnails();
+    });
+
+    // 图片缩放和拖拽功能
+    let scale = 1; // 初始缩放比例
+    let translateX = 0; // X轴平移距离
+    let translateY = 0; // Y轴平移距离
+    let isDragging = false; // 是否正在拖拽
+    let startX, startY; // 拖拽起始位置
+
+    // 重置图片缩放和位置
+    function resetImageTransform() {
+        scale = 1;
+        translateX = 0;
+        translateY = 0;
+        applyTransform();
+    }
+
+    // 应用变换
+    function applyTransform() {
+        const modalImage = document.getElementById('modalImage');
+        modalImage.style.transform = `scale(${scale}) translate(${translateX}px, ${translateY}px)`;
+    }
+
+    // 鼠标滚轮缩放
+    document.getElementById('modal').addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.1 : 0.1; // 滚轮方向决定放大或缩小
+        scale = Math.min(Math.max(0.5, scale + delta), 3); // 限制缩放范围 0.5 - 3
+        applyTransform();
+    });
+
+    // 鼠标按下开始拖拽
+    document.getElementById('modalImage').addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        isDragging = true;
+        startX = e.clientX - translateX;
+        startY = e.clientY - translateY;
+        document.getElementById('modalImage').style.cursor = 'grabbing'; // 拖拽时鼠标样式
+    });
+
+    // 鼠标移动拖拽
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            translateX = e.clientX - startX;
+            translateY = e.clientY - startY;
+            applyTransform();
+        }
+    });
+
+    // 鼠标松开结束拖拽
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+        document.getElementById('modalImage').style.cursor = 'grab'; // 恢复默认鼠标样式
+    });
+
+    // 双击重置缩放和位置
+    document.getElementById('modalImage').addEventListener('dblclick', () => {
+        resetImageTransform();
     });
 </script>
