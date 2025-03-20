@@ -7,6 +7,7 @@ sections:
     content:
       title: The Team
       text: |
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <div class="group-photo">
           <img src="/images/红林花海_2024.9.18.jpg?fm=webp" alt="Group Photo 2">
         </div>
@@ -26,6 +27,16 @@ sections:
   - block: markdown
     content:
       text: |
+        <script>
+          function copyToClipboard(email) {
+            navigator.clipboard.writeText(email).then(function() {
+              alert('Email copied to clipboard: ' + email);
+            }, function(err) {
+              console.error('Could not copy text: ', err);
+            });
+          }
+        </script>
+
         ## Undergraduate Students
         <table style="width:100%; border-collapse: collapse; border: none;">
           {{ range .Site.Data.people.undergraduate_students }}
