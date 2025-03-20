@@ -89,6 +89,7 @@
         display: block;
         margin: 0 auto;
         transition: transform 0.1s ease;
+        cursor: grab;
     }
 
     /* 模态框中的导航按钮 */
@@ -358,35 +359,45 @@
         const mouseY = e.clientY - rect.top;
 
         const delta = e.deltaY < 0 ? 1.1 : 0.9; // 滚轮向上放大，向下缩小
-        scale *= delta;
+        const newScale = scale * delta;
+
+        // 限制缩放范围
+        if (newScale < 1) return; // 不允许缩小到小于初始比例
+        if (newScale > 3) return; // 限制最大放大比例
+
+        scale = newScale;
         offsetX = (offsetX + mouseX - rect.width / 2) * delta - (mouseX - rect.width / 2);
         offsetY = (offsetY + mouseY - rect.height / 2) * delta - (mouseY - rect.height / 2);
 
         modalImage.style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
     });
 
-    // // 按住左键拖拽图片
-    // document.getElementById('modalImage').addEventListener('mousedown', (e) => {
-    //     if (e.button === 0) { // 左键
-    //         isDragging = true;
-    //         startX = e.clientX;
-    //         startY = e.clientY;
-    //         initialOffsetX = offsetX;
-    //         initialOffsetY = offsetY;
-    //     }
-    // });
+    // 按住左键拖拽图片
+    document.getElementById('modalImage').addEventListener('mousedown', (e) => {
+        if (e.button === 0) { // 左键
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            initialOffsetX = offsetX;
+            initialOffsetY = offsetY;
+            document.getElementById('modalImage').style.cursor = 'grabbing';
+        }
+    });
 
-    // document.addEventListener('mousemove', (e) => {
-    //     if (isDragging) {
-    //         offsetX = initialOffsetX + (e.clientX - startX);
-    //         offsetY = initialOffsetY + (e.clientY - startY);
-    //         document.getElementById('modalImage').style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
-    //     }
-    // });
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            offsetX = initialOffsetX + (e.clientX - startX);
+            offsetY = initialOffsetY + (e.clientY - startY);
+            document.getElementById('modalImage').style.transform = `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`;
+        }
+    });
 
-    // document.addEventListener('mouseup', () => {
-    //     isDragging = false;
-    // });
+    document.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            document.getElementById('modalImage').style.cursor = 'grab';
+        }
+    });
 
     // 键盘切换功能
     document.addEventListener('keydown', (e) => {
