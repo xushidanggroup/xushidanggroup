@@ -71,8 +71,9 @@
         display: block;
         margin: 0 auto;
         transform-origin: center;
-        transition: transform 0.2s ease;
+        transition: transform 0.1s ease-out; /* 优化拖拽平滑度 */
         cursor: grab;
+        user-select: none; /* 防止拖拽时选中图片 */
     }
     .modal-nav {
         position: absolute;
@@ -290,24 +291,30 @@
         if (scale <= 1) return;
         e.preventDefault();
         isDragging = true;
-        startX = e.clientX - translateX;
-        startY = e.clientY - translateY;
+        const rect = document.getElementById('modalImage').getBoundingClientRect();
+        startX = e.clientX / scale - translateX;
+        startY = e.clientY / scale - translateY;
         document.getElementById('modalImage').style.cursor = 'grabbing';
+        document.getElementById('modalImage').style.transition = 'none'; // 拖拽时禁用过渡
     });
 
     // 拖拽中
     document.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
-        translateX = e.clientX - startX;
-        translateY = e.clientY - startY;
+        const rect = document.getElementById('modalImage').getBoundingClientRect();
+        translateX = e.clientX / scale - startX;
+        translateY = e.clientY / scale - startY;
         restrictTranslate();
         applyTransform();
     });
 
     // 拖拽结束
     document.addEventListener('mouseup', () => {
-        isDragging = false;
-        if (scale > 1) document.getElementById('modalImage').style.cursor = 'grab';
+        if (isDragging) {
+            isDragging = false;
+            document.getElementById('modalImage').style.cursor = 'grab';
+            document.getElementById('modalImage').style.transition = 'transform 0.1s ease-out'; // 恢复过渡
+        }
     });
 
     // 限制平移范围，确保图片边缘不脱离模态框
