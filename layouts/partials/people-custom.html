@@ -1,86 +1,221 @@
 <!-- layouts/partials/people-custom.html -->
+<style>
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+    margin: 0 auto;
+    max-width: 1200px;
+  }
+  .person {
+    flex: 1 1 calc(20% - 10px);
+    max-width: calc(20% - 10px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .person img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 5px;
+  }
+  .person p {
+    margin: 0;
+  }
+  .person .name {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .person .role {
+    font-size: 12px;
+  }
+  .person .social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    cursor: pointer;
+  }
+  .person .social i {
+    margin-right: 5px;
+  }
+  .person .social span {
+    display: none;
+    font-size: 12px;
+  }
+  .person .social:hover span {
+    display: inline;
+  }
+  .person a {
+    text-decoration: none;
+    color: inherit;
+  }
+  .person a:hover {
+    text-decoration: underline;
+  }
+  /* 调整 table 样式 */
+  .table-container {
+    margin: 0 auto;
+    max-width: 1200px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border: none;
+  }
+  table td {
+    padding: 10px;
+    text-align: left;
+    font-size: 14px;
+  }
+  table td:nth-child(1) {
+    width: 20%;
+    font-weight: bold;
+  }
+  table td:nth-child(2) {
+    width: 40%;
+  }
+  table td:nth-child(3) {
+    width: 40%;
+  }
+  h2 {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.5em;
+  }
+  hr.section-divider {
+    border: none;
+    border-top: 2px solid #333;
+    margin: 30px auto; /* 居中 */
+    max-width: 1200px; /* 与内容宽度一致 */
+  }
+  @media (max-width: 1200px) {
+    .person {
+      flex: 1 1 calc(25% - 10px);
+      max-width: calc(25% - 10px);
+    }
+  }
+  @media (max-width: 992px) {
+    .person {
+      flex: 1 1 calc(33.33% - 10px);
+      max-width: calc(33.33% - 10px);
+    }
+  }
+  @media (max-width: 768px) {
+    .person {
+      flex: 1 1 calc(50% - 10px);
+      max-width: calc(50% - 10px);
+    }
+  }
+  @media (max-width: 576px) {
+    .person {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+  }
+</style>
+
+<!-- Principle Investigator -->
+<h2>Principle Investigator</h2>
+<div class="container">
+  {{ with .Site.Data.people.principle_investigator }}
+    {{ range . }}
+      <div class="person">
+        <a href="/people/{{ .folder }}/"><img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}"></a>
+        <p class="name"><a href="/people/{{ .folder }}/">{{ .name }}</a></p>
+        <p class="role">{{ .role }}</p>
+        <p class="social">
+          <a href="#" class="email-icon" data-email="{{ .email }}" onclick="copyEmail(event, '{{ .email }}')">
+            <i class="fas fa-envelope"></i><span>Email</span>
+          </a>
+          {{ if .scholar }}
+            <a href="{{ .scholar }}">
+              <i class="fas fa-graduation-cap"></i><span>Google Scholar</span>
+            </a>
+          {{ end }}
+        </p>
+      </div>
+    {{ end }}
+  {{ end }}
+</div>
+
+<hr class="section-divider">
+
+<!-- Graduate Students -->
+<h2>Graduate Students</h2>
+<div class="container">
+  {{ with .Site.Data.people.graduate_students }}
+    {{ range . }}
+      <div class="person">
+        <a href="/people/{{ .folder }}/"><img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}"></a>
+        <p class="name"><a href="/people/{{ .folder }}/">{{ .name }}</a></p>
+        <p class="role">{{ .role }}</p>
+        <p class="social">
+          <a href="#" class="email-icon" data-email="{{ .email }}" onclick="copyEmail(event, '{{ .email }}')">
+            <i class="fas fa-envelope"></i><span>Email</span>
+          </a>
+          {{ if .scholar }}
+            <a href="{{ .scholar }}">
+              <i class="fas fa-graduation-cap"></i><span>Google Scholar</span>
+            </a>
+          {{ end }}
+        </p>
+      </div>
+    {{ end }}
+  {{ end }}
+</div>
+
+<hr class="section-divider">
+
+<!-- Undergraduate Students -->
+<h2>Undergraduate Students</h2>
+<div class="table-container">
+  <table>
+    {{ with .Site.Data.people.undergraduate_students }}
+      {{ range . }}
+        <tr>
+          <td>{{ .name }}</td>
+          <td>{{ .role }}</td>
+          <td></td>
+        </tr>
+      {{ end }}
+    {{ end }}
+  </table>
+</div>
+
+<hr class="section-divider">
+
+<!-- Alumni -->
+<h2>Alumni</h2>
+<div class="table-container">
+  <table>
+    {{ with .Site.Data.people.alumni }}
+      {{ range . }}
+        <tr>
+          <td>{{ .name }}</td>
+          <td>{{ .role }}</td>
+          <td>{{ .current }}</td>
+        </tr>
+      {{ end }}
+    {{ end }}
+  </table>
+</div>
+
+<!-- JavaScript for copying email -->
 <script>
-  function copyToClipboard(email) {
-    navigator.clipboard.writeText(email).then(function() {
+  function copyEmail(event, email) {
+    event.preventDefault();
+    navigator.clipboard.writeText(email).then(() => {
       alert('Email copied to clipboard: ' + email);
-    }, function(err) {
-      console.error('Could not copy text: ', err);
+    }).catch(err => {
+      console.error('Failed to copy email: ', err);
     });
   }
 </script>
-
-<h2>Principle Investigator</h2>
-<div class="container">
-  {{ range .Site.Data.people.principle_investigator }}
-  <div class="person">
-    <a href="/people/{{ .folder }}/"><img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}"></a>
-    <p class="name"><a href="/people/{{ .folder }}/">{{ .name }}</a></p>
-    <p class="role">{{ .role }}</p>
-    {{ if .email }}
-    <div class="social email" onclick="copyToClipboard('{{ .email }}')">
-      <i class="fas fa-envelope"></i><span>{{ .email }}</span>
-    </div>
-    {{ end }}
-    {{ if .scholar }}
-    <div class="social scholar" onclick="window.open('{{ .scholar }}')">
-      <i class="fas fa-graduation-cap"></i><span>Google Scholar</span>
-    </div>
-    {{ end }}
-  </div>
-  {{ else }}
-  <p>No Principle Investigators found.</p>
-  {{ end }}
-</div>
-
-<h2>Graduate Students</h2>
-<div class="container">
-  {{ range .Site.Data.people.graduate_students }}
-  <div class="person">
-    <a href="/people/{{ .folder }}/"><img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}"></a>
-    <p class="name"><a href="/people/{{ .folder }}/">{{ .name }}</a></p>
-    <p class="role">{{ .role }}</p>
-    {{ if .email }}
-    <div class="social email" onclick="copyToClipboard('{{ .email }}')">
-      <i class="fas fa-envelope"></i><span>{{ .email }}</span>
-    </div>
-    {{ end }}
-    {{ if .scholar }}
-    <div class="social scholar" onclick="window.open('{{ .scholar }}')">
-      <i class="fas fa-graduation-cap"></i><span>Google Scholar</span>
-    </div>
-    {{ end }}
-  </div>
-  {{ else }}
-  <p>No Graduate Students found.</p>
-  {{ end }}
-</div>
-
-<h2>Undergraduate Students</h2>
-{{ if .Site.Data.people.undergraduate_students }}
-<table style="width:100%; border-collapse: collapse; border: none;">
-  {{ range .Site.Data.people.undergraduate_students }}
-  <tr>
-    <td style="width: 20%; padding: 8px; vertical-align: middle;">{{ .name }}</td>
-    <td style="width: 35%; padding: 8px; vertical-align: middle;">{{ .role }}</td>
-    <td style="width: 45%; padding: 8px; vertical-align: middle;"></td>
-  </tr>
-  {{ end }}
-</table>
-{{ else }}
-<p>No Undergraduate Students found.</p>
-{{ end }}
-
-<h2>Alumni</h2>
-{{ if .Site.Data.people.alumni }}
-<table style="width:100%; border-collapse: collapse; border: none;">
-  {{ range .Site.Data.people.alumni }}
-  <tr>
-    <td style="width: 20%; padding: 8px; vertical-align: middle;">{{ .name }}</td>
-    <td style="width: 35%; padding: 8px; vertical-align: middle;">{{ .role }}</td>
-    <td style="width: 45%; padding: 8px; vertical-align: middle;">{{ .current }}</td>
-  </tr>
-  {{ end }}
-</table>
-{{ else }}
-<p>No Alumni found.</p>
-{{ end }}

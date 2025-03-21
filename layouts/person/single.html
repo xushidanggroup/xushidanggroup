@@ -1,0 +1,32 @@
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+  {{ $title := .Title }}
+  <!-- Principle Investigator -->
+  {{ with .Site.Data.people.principle_investigator }}
+    {{ range . }}
+      {{ if eq .name $title }}
+        <p>Role: {{ .role }}</p>
+        {{ if .email }}
+          <p>Email: {{ .email }}</p>
+        {{ end }}
+        {{ if .scholar }}
+          <p><a href="{{ .scholar }}">Google Scholar</a></p>
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  <!-- Graduate Students -->
+  {{ with .Site.Data.people.graduate_students }}
+    {{ range . }}
+      {{ if eq .name $title }}
+        <p>Role: {{ .role }}</p>
+        {{ if .email }}
+          <p>Email: {{ .email }}</p>
+        {{ end }}
+        {{ if .scholar }}
+          <p><a href="{{ .scholar }}">Google Scholar</a></p>
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}

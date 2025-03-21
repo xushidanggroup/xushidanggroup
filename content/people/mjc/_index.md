@@ -1,6 +1,5 @@
 ---
-title: JC 研究生
+title: "Jingcheng Mo 莫景丞"
+type: person
 date: 2024-07-03
 ---
-
-Personal information and details about Bin Xu.
