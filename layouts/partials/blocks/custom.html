@@ -1,4 +1,4 @@
-<!-- layouts/partials/blocks/custom.html -->
+<p>Debug: Content = {{ .content | jsonify }}</p>
 {{ if .content.template }}
   <p>Template found: {{ .content.template }}</p>
   {{ partial .content.template . }}

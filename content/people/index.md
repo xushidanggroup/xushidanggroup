@@ -12,8 +12,7 @@ sections:
           <img src="/images/红林花海_2024.9.18.jpg?fm=webp" alt="Group Photo 2">
         </div>
   - block: custom
-    content:
-      template: people.html
+    template: people.html  # 移动到 block 级别
   - block: markdown
     content:
       text: |
