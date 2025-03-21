@@ -131,8 +131,8 @@
   {{ with .Site.Data.people.principle_investigator }}
     {{ range . }}
       <div class="person">
-        <a href="/people/{{ .folder }}/"><img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}"></a>
-        <p class="name"><a href="/people/{{ .folder }}/">{{ .name }}</a></p>
+        <img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}">
+        <p class="name">{{ .name }}</p>
         <p class="role">{{ .role }}</p>
         <p class="social">
           <a href="#" class="email-icon" data-email="{{ .email }}" onclick="copyEmail(event, '{{ .email }}')">
@@ -157,8 +157,8 @@
   {{ with .Site.Data.people.graduate_students }}
     {{ range . }}
       <div class="person">
-        <a href="/people/{{ .folder }}/"><img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}"></a>
-        <p class="name"><a href="/people/{{ .folder }}/">{{ .name }}</a></p>
+        <img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}"></a>
+        <p class="name">{{ .name }}</p>
         <p class="role">{{ .role }}</p>
         <p class="social">
           <a href="#" class="email-icon" data-email="{{ .email }}" onclick="copyEmail(event, '{{ .email }}')">
