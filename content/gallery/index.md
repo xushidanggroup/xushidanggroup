@@ -277,6 +277,14 @@
     // 初始化
     document.addEventListener('DOMContentLoaded', generateThumbnails);
 
+    // 点击模态框外部关闭
+    document.getElementById('modal').addEventListener('click', (e) => {
+        const modalContent = document.querySelector('.modal-content');
+        if (!modalContent.contains(e.target)) {
+            closeModal();
+        }
+    });
+
     // 缩放和拖拽逻辑
     let scale = 1;
     let translateX = 0;
