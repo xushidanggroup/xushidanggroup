@@ -11,53 +11,9 @@ sections:
         <div class="group-photo">
           <img src="/images/红林花海_2024.9.18.jpg?fm=webp" alt="Group Photo 2">
         </div>
-  - block: people
+  - block: custom
     content:
-      title: null
-      user_groups:
-        - Principle Investigator
-        - Graduate Students
-      sort_by: Params.last_name
-      sort_ascending: true
-    design:
-      show_interests: false
-      show_role: true
-      show_organizations: true
-      show_social: true
-  - block: markdown
-    content:
-      text: |
-        <script>
-          function copyToClipboard(email) {
-            navigator.clipboard.writeText(email).then(function() {
-              alert('Email copied to clipboard: ' + email);
-            }, function(err) {
-              console.error('Could not copy text: ', err);
-            });
-          }
-        </script>
-
-        ## Undergraduate Students
-        <table style="width:100%; border-collapse: collapse; border: none;">
-          {{ range .Site.Data.people.undergraduate_students }}
-          <tr>
-            <td style="width: 20%; padding: 8px; vertical-align: middle;">{{ .name }}</td>
-            <td style="width: 35%; padding: 8px; vertical-align: middle;">{{ .role }}</td>
-            <td style="width: 45%; padding: 8px; vertical-align: middle;"></td>
-          </tr>
-          {{ end }}
-        </table>
-
-        ## Alumni
-        <table style="width:100%; border-collapse: collapse; border: none;">
-          {{ range .Site.Data.people.alumni }}
-          <tr>
-            <td style="width: 20%; padding: 8px; vertical-align: middle;">{{ .name }}</td>
-            <td style="width: 35%; padding: 8px; vertical-align: middle;">{{ .role }}</td>
-            <td style="width: 45%; padding: 8px; vertical-align: middle;">{{ .current }}</td>
-          </tr>
-          {{ end }}
-        </table>
+      template: people-custom.html
   - block: markdown
     content:
       text: |

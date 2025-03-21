@@ -1,13 +1,3 @@
-// Make page header alignment consistent with widget page header alignment
-.universal-wrapper h1 {
-  text-align: center;
-}
-
-// Center the CTA shortcode button
-.cta-group {
-  justify-content: center;
-}
-
 // assets/scss/template.scss
 
 // Make page header alignment consistent with widget page header alignment
@@ -20,101 +10,99 @@
   justify-content: center;
 }
 
-// Custom styles for People page (block: people)
-.people {
-  .container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: flex-start;
-  }
+// Custom styles for People page
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+}
 
+.person {
+  flex: 1 1 calc(20% - 20px); // 5 列布局
+  max-width: calc(20% - 20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.person img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.person p {
+  margin: 0;
+}
+
+.person .name {
+  font-size: 14px;
+}
+
+.person .role {
+  font-size: 12px;
+}
+
+.person .social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.person .social i {
+  margin-right: 5px;
+}
+
+.person .social span {
+  display: none;
+  font-size: 12px;
+}
+
+.person .social:hover span {
+  display: inline;
+}
+
+.person a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.person a:hover {
+  text-decoration: underline;
+}
+
+// 响应式布局
+@media (max-width: 1200px) {
   .person {
-    flex: 1 1 calc(20% - 20px); // 5 列布局
-    max-width: calc(20% - 20px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin-bottom: 20px;
+    flex: 1 1 calc(25% - 20px); // 4 列
+    max-width: calc(25% - 20px);
   }
+}
 
-  .person img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 50%;
-    margin-bottom: 10px;
+@media (max-width: 992px) {
+  .person {
+    flex: 1 1 calc(33.33% - 20px); // 3 列
+    max-width: calc(33.33% - 20px);
   }
+}
 
-  .person p {
-    margin: 0;
+@media (max-width: 768px) {
+  .person {
+    flex: 1 1 calc(50% - 20px); // 2 列
+    max-width: calc(50% - 20px);
   }
+}
 
-  .person .name {
-    font-size: 14px;
-  }
-
-  .person .role {
-    font-size: 12px;
-  }
-
-  .person .social {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 5px;
-    cursor: pointer;
-  }
-
-  .person .social i {
-    margin-right: 5px;
-  }
-
-  .person .social span {
-    display: none;
-    font-size: 12px;
-  }
-
-  .person .social:hover span {
-    display: inline;
-  }
-
-  .person a {
-    text-decoration: none;
-    color: inherit;
-  }
-
-  .person a:hover {
-    text-decoration: underline;
-  }
-
-  // 响应式布局
-  @media (max-width: 1200px) {
-    .person {
-      flex: 1 1 calc(25% - 20px); // 4 列
-      max-width: calc(25% - 20px);
-    }
-  }
-
-  @media (max-width: 992px) {
-    .person {
-      flex: 1 1 calc(33.33% - 20px); // 3 列
-      max-width: calc(33.33% - 20px);
-    }
-  }
-
-  @media (max-width: 768px) {
-    .person {
-      flex: 1 1 calc(50% - 20px); // 2 列
-      max-width: calc(50% - 20px);
-    }
-  }
-
-  @media (max-width: 576px) {
-    .person {
-      flex: 1 1 100%; // 1 列
-      max-width: 100%;
-    }
+@media (max-width: 576px) {
+  .person {
+    flex: 1 1 100%; // 1 列
+    max-width: 100%;
   }
 }
