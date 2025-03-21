@@ -13,7 +13,7 @@ sections:
         </div>
   - block: custom
     content:
-      template: people-custom.html
+      template: people.html
   - block: markdown
     content:
       text: |

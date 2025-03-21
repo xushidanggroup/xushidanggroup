@@ -1,74 +1,32 @@
 <!-- layouts/partials/people-custom.html -->
 <script>
-    function copyToClipboard(email) {
-      navigator.clipboard.writeText(email).then(function() {
-        alert('Email copied to clipboard: ' + email);
-      }, function(err) {
-        console.error('Could not copy text: ', err);
-      });
-    }
-  </script>
-  
-  <h2>Principle Investigator</h2>
-  <div class="container">
-    {{ range .Site.Data.people.principle_investigator }}
-    <div class="person">
-      <a href="/people/{{ .folder }}/"><img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}"></a>
-      <p class="name"><a href="/people/{{ .folder }}/">{{ .name }}</a></p>
-      <p class="role">{{ .role }}</p>
-      {{ if .email }}
-      <div class="social email" onclick="copyToClipboard('{{ .email }}')">
-        <i class="fas fa-envelope"></i><span>{{ .email }}</span>
-      </div>
-      {{ end }}
-      {{ if .scholar }}
-      <div class="social scholar" onclick="window.open('{{ .scholar }}')">
-        <i class="fas fa-graduation-cap"></i><span>Google Scholar</span>
-      </div>
-      {{ end }}
+  function copyToClipboard(email) {
+    navigator.clipboard.writeText(email).then(function() {
+      alert('Email copied to clipboard: ' + email);
+    }, function(err) {
+      console.error('Could not copy text: ', err);
+    });
+  }
+</script>
+
+<h2>Principle Investigator</h2>
+<div class="container">
+  {{ range .Site.Data.people.principle_investigator }}
+  <div class="person">
+    <a href="/people/{{ .folder }}/"><img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}"></a>
+    <p class="name"><a href="/people/{{ .folder }}/">{{ .name }}</a></p>
+    <p class="role">{{ .role }}</p>
+    {{ if .email }}
+    <div class="social email" onclick="copyToClipboard('{{ .email }}')">
+      <i class="fas fa-envelope"></i><span>{{ .email }}</span>
+    </div>
+    {{ end }}
+    {{ if .scholar }}
+    <div class="social scholar" onclick="window.open('{{ .scholar }}')">
+      <i class="fas fa-graduation-cap"></i><span>Google Scholar</span>
     </div>
     {{ end }}
   </div>
-  
-  <h2>Graduate Students</h2>
-  <div class="container">
-    {{ range .Site.Data.people.graduate_students }}
-    <div class="person">
-      <a href="/people/{{ .folder }}/"><img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}"></a>
-      <p class="name"><a href="/people/{{ .folder }}/">{{ .name }}</a></p>
-      <p class="role">{{ .role }}</p>
-      {{ if .email }}
-      <div class="social email" onclick="copyToClipboard('{{ .email }}')">
-        <i class="fas fa-envelope"></i><span>{{ .email }}</span>
-      </div>
-      {{ end }}
-      {{ if .scholar }}
-      <div class="social scholar" onclick="window.open('{{ .scholar }}')">
-        <i class="fas fa-graduation-cap"></i><span>Google Scholar</span>
-      </div>
-      {{ end }}
-    </div>
-    {{ end }}
-  </div>
-  
-  <h2>Undergraduate Students</h2>
-  <table style="width:100%; border-collapse: collapse; border: none;">
-    {{ range .Site.Data.people.undergraduate_students }}
-    <tr>
-      <td style="width: 20%; padding: 8px; vertical-align: middle;">{{ .name }}</td>
-      <td style="width: 35%; padding: 8px; vertical-align: middle;">{{ .role }}</td>
-      <td style="width: 45%; padding: 8px; vertical-align: middle;"></td>
-    </tr>
-    {{ end }}
-  </table>
-  
-  <h2>Alumni</h2>
-  <table style="width:100%; border-collapse: collapse; border: none;">
-    {{ range .Site.Data.people.alumni }}
-    <tr>
-      <td style="width: 20%; padding: 8px; vertical-align: middle;">{{ .name }}</td>
-      <td style="width: 35%; padding: 8px; vertical-align: middle;">{{ .role }}</td>
-      <td style="width: 45%; padding: 8px; vertical-align: middle;">{{ .current }}</td>
-    </tr>
-    {{ end }}
-  </table>
+  {{ end }}
+</div>
+<!-- Graduate Students、Undergraduate Students、Alumni 类似 -->

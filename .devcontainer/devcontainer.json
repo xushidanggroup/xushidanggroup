@@ -1,0 +1,10 @@
+{
+    "name": "Hugo Blox Codespace",
+    "image": "mcr.microsoft.com/vscode/devcontainers/base:ubuntu",
+    "features": {
+      "ghcr.io/devcontainers/features/hugo:1": {
+        "version": "0.139.4",
+        "extended": true
+      }
+    }
+  }

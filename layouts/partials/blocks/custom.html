@@ -1,5 +1,6 @@
 <!-- layouts/partials/blocks/custom.html -->
 {{ if .content.template }}
+  <p>Template found: {{ .content.template }}</p>
   {{ partial .content.template . }}
 {{ else }}
   <p>No template specified for custom block.</p>
