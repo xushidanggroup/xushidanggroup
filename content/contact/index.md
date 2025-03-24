@@ -52,5 +52,5 @@ date: 2024-07-07
 </div>
 
 <div class="campus-image">
-    <img src="./图书馆鸟瞰.png?fm=webp" alt="图书馆鸟瞰">
+    <img src="./图书馆鸟瞰(720).png?fm=webp" alt="图书馆鸟瞰">
 </div>
