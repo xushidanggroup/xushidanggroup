@@ -43,12 +43,9 @@ header:
 # Site footer
 footer:
   copyright:
-    notice: '© {year} Me. This work is licensed under {license}'
+    notice: '© {year} Xu Research Group, SCUT. Contact: xusd@scut.edu.cn'
     license:
-      enable: true
-      allow_derivatives: false
-      share_alike: true
-      allow_commercial: false
+      enable: false  # 关闭许可证显示
 
 # Localization
 locale:
