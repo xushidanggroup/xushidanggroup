@@ -60,4 +60,5 @@ related:
 security:
   _merge: deep
 sitemap:
-  _merge: deep
+  changefreq: daily
+  priority: 0.5
