@@ -1,1 +1,1 @@
-# [Xu Research Group](https://xushidanggroup.netlify.app/)
+# [Xushidang Research Group](https://xushidanggroup.netlify.app/)
