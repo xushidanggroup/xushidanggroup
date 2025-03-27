@@ -43,7 +43,7 @@ header:
 # Site footer
 footer:
   copyright:
-    notice: '© {year} Xu Research Group, SCUT. Contact: xusd@scut.edu.cn'
+    notice: '© {year} Xushidang Research Group, SCUT. Contact: xusd@scut.edu.cn'
     license:
       enable: false  # 关闭许可证显示
 
