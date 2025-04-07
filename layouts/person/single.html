@@ -5,13 +5,25 @@
   {{ with .Site.Data.people.principle_investigator }}
     {{ range . }}
       {{ if eq .name $title }}
-        <p>Role: {{ .role }}</p>
-        {{ if .email }}
-          <p>Email: {{ .email }}</p>
-        {{ end }}
-        {{ if .scholar }}
-          <p><a href="{{ .scholar }}">Google Scholar</a></p>
-        {{ end }}
+        <div class="person">
+          <img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}">
+          <p class="name">{{ .name }}</p>
+          <p class="role">{{ .role }}</p>
+          {{ if .email }}
+            <p class="social">
+              <a href="#" class="email-icon" data-email="{{ .email }}" onclick="copyEmail(event, '{{ .email }}')">
+                <i class="fas fa-envelope"></i><span>Email</span>
+              </a>
+            </p>
+          {{ end }}
+          {{ if .scholar }}
+            <p class="social">
+              <a href="{{ .scholar }}">
+                <i class="fas fa-graduation-cap"></i><span>Google Scholar</span>
+              </a>
+            </p>
+          {{ end }}
+        </div>
       {{ end }}
     {{ end }}
   {{ end }}
@@ -19,14 +31,27 @@
   {{ with .Site.Data.people.graduate_students }}
     {{ range . }}
       {{ if eq .name $title }}
-        <p>Role: {{ .role }}</p>
-        {{ if .email }}
-          <p>Email: {{ .email }}</p>
-        {{ end }}
-        {{ if .scholar }}
-          <p><a href="{{ .scholar }}">Google Scholar</a></p>
-        {{ end }}
+        <div class="person">
+          <img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}">
+          <p class="name">{{ .name }}</p>
+          <p class="role">{{ .role }}</p>
+          {{ if .email }}
+            <p class="social">
+              <a href="#" class="email-icon" data-email="{{ .email }}" onclick="copyEmail(event, '{{ .email }}')">
+                <i class="fas fa-envelope"></i><span>Email</span>
+              </a>
+            </p>
+          {{ end }}
+          {{ if .scholar }}
+            <p class="social">
+              <a href="{{ .scholar }}">
+                <i class="fas fa-graduation-cap"></i><span>Google Scholar</span>
+              </a>
+            </p>
+          {{ end }}
+        </div>
       {{ end }}
     {{ end }}
   {{ end }}
+  <script src="/js/people.min.js"></script>
 {{ end }}
