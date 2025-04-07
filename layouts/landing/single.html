@@ -1,0 +1,11 @@
+{{ define "main" }}
+  <!-- 加载页面特定样式 -->
+  {{ if eq .RelPermalink "/contact/" }}
+    {{ partial "styles/contact.html" . }}
+  {{ end }}
+
+  <!-- 渲染页面内容 -->
+  <div class="page-content">
+    {{ .Content }}
+  </div>
+{{ end }}

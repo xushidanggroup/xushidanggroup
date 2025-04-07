@@ -1,0 +1,4 @@
+<!-- layouts/partials/styles/contact.html -->
+{{ $scss := resources.Get "scss/contact.scss" }}
+{{ $css := $scss | resources.ToCSS | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
