@@ -60,23 +60,6 @@ sections:
 ---
 
 <style>
-  .gallery-main img {
-    max-width: 100%;
-    height: auto;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: opacity 2s ease-in-out;
-    opacity: 1;
-  }
-
-  .gallery-thumbnails img:hover {
-    transform: scale(1.1);
-    border: 2px solid #ccc;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-  }
-
   .slider-title {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     color: #ffffff;
