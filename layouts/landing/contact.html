@@ -1,0 +1,66 @@
+{{ define "main" }}
+<style>
+    .contact-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .contact-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .contact-details {
+        width: 100%;
+        max-width: 100%;
+    }
+    .contact-image {
+        width: 100%;
+        text-align: center;
+    }
+    .contact-image img {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+    }
+    @media (min-width: 768px) {
+        .contact-container {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .contact-details {
+            max-width: 45%;
+        }
+        .contact-image {
+            max-width: 50%;
+        }
+    }
+    /* 统一标题样式 */
+    .page-title {
+        text-align: center;
+        font-size: 1.875rem; /* 对应 text-3xl */
+        font-weight: 700; /* 对应 font-bold */
+        margin-top: 1.5rem; /* 对应 my-6 */
+        margin-bottom: 1.5rem; /* 对应 my-6 */
+    }
+</style>
+
+<div class="contact-wrapper">
+    <h1 class="page-title">{{ .Title }}</h1>
+
+    <div class="contact-container">
+        <div class="contact-details">
+            {{ .Content }}
+        </div>
+        <div class="contact-image">
+            <img src="/images/图书馆鸟瞰(720).png?fm=webp" alt="图书馆鸟瞰">
+        </div>
+    </div>
+</div>
+{{ end }}
