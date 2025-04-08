@@ -30,24 +30,27 @@
     @media (min-width: 768px) {
         .contact-container {
             flex-direction: row;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 20px;
+            justify-content: center; /* 居中对齐 */
+            align-items: flex-end; /* 底部对齐 */
+            gap: 20px; /* 保持间距 */
         }
         .contact-details {
-            max-width: 45%;
+            max-width: 45%; /* 保持文字区域宽度 */
         }
         .contact-image {
-            max-width: 50%;
+            max-width: 50%; /* 保持图片区域宽度 */
+        }
+        .contact-image img {
+            max-height: 400px; /* 限制图片最大高度，避免过高 */
+            object-fit: cover; /* 确保图片填充区域 */
         }
     }
-    /* 统一标题样式 */
     .page-title {
         text-align: center;
-        font-size: 1.875rem; /* 对应 text-3xl */
-        font-weight: 700; /* 对应 font-bold */
-        margin-top: 1.5rem; /* 对应 my-6 */
-        margin-bottom: 1.5rem; /* 对应 my-6 */
+        font-size: 1.875rem;
+        font-weight: 700;
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
     }
 </style>
 
@@ -59,7 +62,7 @@
             {{ .Content }}
         </div>
         <div class="contact-image">
-            <img src="/images/图书馆鸟瞰(720).png?fm=webp" alt="图书馆鸟瞰">
+            <img src="/images/图书馆鸟瞰(960).png?fm=webp" alt="图书馆鸟瞰">
         </div>
     </div>
 </div>
