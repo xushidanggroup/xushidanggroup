@@ -20,10 +20,10 @@ title: "Gallery"
     }
     .gallery-thumbnails {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(clamp(150px, 20vw, 300px), 1fr));
         gap: 15px;
         padding: 20px;
-        max-width: 1200px;
+        max-width: 90vw;
         margin: 0 auto;
     }
     .thumbnail-container {
@@ -33,6 +33,7 @@ title: "Gallery"
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         background: #e0e0e0;
+        aspect-ratio: 3 / 2;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -40,7 +41,7 @@ title: "Gallery"
     .thumbnail-container img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain; /* 或 object-fit: cover */
         border-radius: 8px;
         opacity: 0;
         transition: opacity 0.3s ease-in-out;
