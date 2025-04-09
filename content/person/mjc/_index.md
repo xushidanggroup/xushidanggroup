@@ -18,10 +18,5 @@ education:
       year: "2024"
 experience: 
 social:
-  - type: "email"
-    link: "meitangpeng@gmail.com"
-    icon: "envelope"
-    icon_pack: "fas"
 bio_detail: |
-  MT is a Master's student in Biomedical Engineering at the Xu Group, having joined in 2023. His research focuses on the integration of machine learning and quantum computing for the discovery of biomaterials, drug discovery, and controlled carrier delivery. MT has a keen interest in automated experimental technologies, dedicating his efforts to optimizing bioengineering processes and material properties through innovative computational approaches.
 ---
