@@ -16,6 +16,10 @@
     align-items: center;
     text-align: center;
     margin-bottom: 20px;
+    min-width: 180px;
+    position: relative;
+    padding-bottom: 30px; /* 留出底部空间 */
+    min-height: 220px; /* 统一高度 */
   }
   .person img {
     width: 150px;
@@ -33,28 +37,48 @@
   }
   .person .role {
     font-size: 12px;
-    white-space: nowrap; /* 防止 role 换行 */
+    max-height: 2.4em;
     overflow: hidden;
-    text-overflow: ellipsis; /* 超长时显示省略号 */
+    text-overflow: ellipsis;
+    line-height: 1.2em;
   }
   .person .social {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 5px; /* 增加间距 */
+    flex-wrap: nowrap;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
   .person .social i {
-    margin: 0 5px; /* 调整图标间距，左右均匀 */
-    font-size: 14px; /* 统一图标大小 */
+    margin: 0 5px;
+    font-size: 14px;
   }
-  .person a {
+  .person .social a {
     text-decoration: none;
     color: inherit;
+    position: relative;
+    flex-shrink: 0;
   }
-  .person a:hover {
+  .person .social a:hover {
     text-decoration: underline;
   }
-  /* 调整 table 样式 */
+  .person .social a:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 2px 6px;
+    font-size: 12px;
+    border-radius: 3px;
+    white-space: nowrap;
+    z-index: 10;
+  }
   .table-container {
     margin: 0 auto;
     max-width: 1200px;
@@ -124,29 +148,34 @@
 <!-- Principle Investigator -->
 <h2>Principle Investigator</h2>
 <div class="container">
-  {{ with .Site.Data.people.principle_investigator }}
-    {{ range . }}
+  {{ $people := where .Site.Pages "Section" "person" }}
+  {{ range $people }}
+    {{ if eq .Params.category "principle_investigator" }}
       <div class="person">
-        <a href="/person/{{ .folder }}">
-          <img src="/person/{{ .folder }}/avatar.jpg" alt="{{ .name }}">
+        <a href="{{ .RelPermalink }}">
+          <img src="{{ .Params.avatar | absURL }}" alt="{{ .Title }}">
         </a>
         <p class="name">
-          <a href="/person/{{ .folder }}">{{ .name }}</a>
+          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
         </p>
-        <p class="role">{{ .role }}</p>
+        <p class="role">{{ .Params.role }}</p>
         <p class="social">
-          <a href="#" class="email-icon" data-email="{{ .email }}" onclick="copyEmail(event, '{{ .email }}')">
-            <i class="fas fa-envelope"></i>
-          </a>
-          {{ if .scholar }}
-            <a href="{{ .scholar }}">
-              <i class="fas fa-graduation-cap"></i>
-            </a>
-          {{ end }}
-          {{ if .researchgate }}
-            <a href="{{ .researchgate }}">
-              <i class="fab fa-researchgate"></i>
-            </a>
+          {{ range .Params.social }}
+            {{ if eq .type "email" }}
+              <a href="#" class="email-icon" data-email="{{ .link }}" onclick="copyEmail(event, '{{ .link }}')" data-tooltip="Email">
+                <i class="{{ .icon_pack }} fa-{{ .icon }}"></i>
+              </a>
+            {{ end }}
+            {{ if eq .type "scholar" }}
+              <a href="{{ .link }}" data-tooltip="Google Scholar">
+                <i class="{{ .icon_pack }} fa-{{ .icon }}"></i>
+              </a>
+            {{ end }}
+            {{ if eq .type "researchgate" }}
+              <a href="{{ .link }}" data-tooltip="ResearchGate">
+                <i class="{{ .icon_pack }} fa-{{ .icon }}"></i>
+              </a>
+            {{ end }}
           {{ end }}
         </p>
       </div>
@@ -157,24 +186,34 @@
 <!-- Graduate Students -->
 <h2>Graduate Students</h2>
 <div class="container">
-  {{ with .Site.Data.people.graduate_students }}
-    {{ range . }}
+  {{ $people := where .Site.Pages "Section" "person" }}
+  {{ range $people }}
+    {{ if eq .Params.category "graduate_student" }}
       <div class="person">
-        <a href="/person/{{ .folder }}">
-          <img src="/person/{{ .folder }}/avatar.jpg" alt="{{ .name }}">
+        <a href="{{ .RelPermalink }}">
+          <img src="{{ .Params.avatar | absURL }}" alt="{{ .Title }}">
         </a>
         <p class="name">
-          <a href="/person/{{ .folder }}">{{ .name }}</a>
+          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
         </p>
-        <p class="role">{{ .role }}</p>
+        <p class="role">{{ .Params.role }}</p>
         <p class="social">
-          <a href="#" class="email-icon" data-email="{{ .email }}" onclick="copyEmail(event, '{{ .email }}')">
-            <i class="fas fa-envelope"></i>
-          </a>
-          {{ if .scholar }}
-            <a href="{{ .scholar }}">
-              <i class="fas fa-graduation-cap"></i>
-            </a>
+          {{ range .Params.social }}
+            {{ if eq .type "email" }}
+              <a href="#" class="email-icon" data-email="{{ .link }}" onclick="copyEmail(event, '{{ .link }}')" data-tooltip="Email">
+                <i class="{{ .icon_pack }} fa-{{ .icon }}"></i>
+              </a>
+            {{ end }}
+            {{ if eq .type "scholar" }}
+              <a href="{{ .link }}" data-tooltip="Google Scholar">
+                <i class="{{ .icon_pack }} fa-{{ .icon }}"></i>
+              </a>
+            {{ end }}
+            {{ if eq .type "researchgate" }}
+              <a href="{{ .link }}" data-tooltip="ResearchGate">
+                <i class="{{ .icon_pack }} fa-{{ .icon }}"></i>
+              </a>
+            {{ end }}
           {{ end }}
         </p>
       </div>
@@ -188,7 +227,7 @@
 <h2>Undergraduate Students</h2>
 <div class="table-container">
   <table>
-    {{ with .Site.Data.people.undergraduate_students }}
+    {{ with .Site.Data.US_Alumni.undergraduate_students }}
       {{ range . }}
         <tr>
           <td>{{ .name }}</td>
@@ -206,7 +245,7 @@
 <h2>Alumni</h2>
 <div class="table-container">
   <table>
-    {{ with .Site.Data.people.alumni }}
+    {{ with .Site.Data.US_Alumni.alumni }}
       {{ range . }}
         <tr>
           <td>{{ .name }}</td>

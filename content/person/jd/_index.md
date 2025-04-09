@@ -4,6 +4,7 @@ type: landing
 layout: person
 avatar: "/person/jd/avatar.jpg"
 role: "24 PhD Student in Materials and Chemical Engineering"
+category: "graduate_student"
 organizations:
   - name: "South China University of Technology"
     url: "https://www.scut.edu.cn/new/"

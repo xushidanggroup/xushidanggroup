@@ -4,6 +4,7 @@ type: landing
 layout: person
 avatar: "/person/mjc/avatar.jpg"
 role: "24 Master's Student in Pharmacy"
+category: "graduate_student"
 organizations:
   - name: "South China University of Technology"
     url: "https://www.scut.edu.cn/new/"

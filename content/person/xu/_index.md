@@ -4,6 +4,7 @@ type: landing
 layout: person
 avatar: "/person/xu/avatar.jpg"
 role: "Professor in Biomedical Engineering"
+category: "principle_investigator"
 organizations:
   - name: "South China University of Technology"
     url: "https://www.scut.edu.cn/new/"
