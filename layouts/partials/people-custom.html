@@ -33,23 +33,19 @@
   }
   .person .role {
     font-size: 12px;
+    white-space: nowrap; /* 防止 role 换行 */
+    overflow: hidden;
+    text-overflow: ellipsis; /* 超长时显示省略号 */
   }
   .person .social {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 2px;
-    cursor: pointer;
+    margin-top: 5px; /* 增加间距 */
   }
   .person .social i {
-    margin-right: 5px;
-  }
-  .person .social span {
-    display: none;
-    font-size: 12px;
-  }
-  .person .social:hover span {
-    display: inline;
+    margin: 0 5px; /* 调整图标间距，左右均匀 */
+    font-size: 14px; /* 统一图标大小 */
   }
   .person a {
     text-decoration: none;
@@ -89,9 +85,9 @@
     font-weight: bold;
     margin-bottom: 15px;
     font-size: 1.5em;
-    max-width: 1200px; /* 与内容区域宽度一致 */
-    margin-left: auto; /* 居中 */
-    margin-right: auto; /* 居中 */
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
   }
   hr.section-divider {
     border: none;
@@ -125,7 +121,6 @@
   }
 </style>
 
-<!-- layouts/partials/people-custom.html -->
 <!-- Principle Investigator -->
 <h2>Principle Investigator</h2>
 <div class="container">
@@ -141,11 +136,16 @@
         <p class="role">{{ .role }}</p>
         <p class="social">
           <a href="#" class="email-icon" data-email="{{ .email }}" onclick="copyEmail(event, '{{ .email }}')">
-            <i class="fas fa-envelope"></i><span>Email</span>
+            <i class="fas fa-envelope"></i>
           </a>
           {{ if .scholar }}
             <a href="{{ .scholar }}">
-              <i class="fas fa-graduation-cap"></i><span>Google Scholar</span>
+              <i class="fas fa-graduation-cap"></i>
+            </a>
+          {{ end }}
+          {{ if .researchgate }}
+            <a href="{{ .researchgate }}">
+              <i class="fab fa-researchgate"></i>
             </a>
           {{ end }}
         </p>
@@ -169,11 +169,11 @@
         <p class="role">{{ .role }}</p>
         <p class="social">
           <a href="#" class="email-icon" data-email="{{ .email }}" onclick="copyEmail(event, '{{ .email }}')">
-            <i class="fas fa-envelope"></i><span>Email</span>
+            <i class="fas fa-envelope"></i>
           </a>
           {{ if .scholar }}
             <a href="{{ .scholar }}">
-              <i class="fas fa-graduation-cap"></i><span>Google Scholar</span>
+              <i class="fas fa-graduation-cap"></i>
             </a>
           {{ end }}
         </p>
