@@ -125,14 +125,19 @@
   }
 </style>
 
+<!-- layouts/partials/people-custom.html -->
 <!-- Principle Investigator -->
 <h2>Principle Investigator</h2>
 <div class="container">
   {{ with .Site.Data.people.principle_investigator }}
     {{ range . }}
       <div class="person">
-        <img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}">
-        <p class="name">{{ .name }}</p>
+        <a href="/person/{{ .folder }}">
+          <img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}">
+        </a>
+        <p class="name">
+          <a href="/person/{{ .folder }}">{{ .name }}</a>
+        </p>
         <p class="role">{{ .role }}</p>
         <p class="social">
           <a href="#" class="email-icon" data-email="{{ .email }}" onclick="copyEmail(event, '{{ .email }}')">
@@ -149,16 +154,18 @@
   {{ end }}
 </div>
 
-<hr class="section-divider">
-
 <!-- Graduate Students -->
 <h2>Graduate Students</h2>
 <div class="container">
   {{ with .Site.Data.people.graduate_students }}
     {{ range . }}
       <div class="person">
-        <img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}"></a>
-        <p class="name">{{ .name }}</p>
+        <a href="/person/{{ .folder }}">
+          <img src="/people/{{ .folder }}/avatar.jpg" alt="{{ .name }}">
+        </a>
+        <p class="name">
+          <a href="/person/{{ .folder }}">{{ .name }}</a>
+        </p>
         <p class="role">{{ .role }}</p>
         <p class="social">
           <a href="#" class="email-icon" data-email="{{ .email }}" onclick="copyEmail(event, '{{ .email }}')">
