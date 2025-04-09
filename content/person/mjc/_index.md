@@ -13,9 +13,9 @@ education:
     - course: "MEng in Pharmacy"
       institution: "South China University of Technology"
       year: "Currently Enrolled (2024 - Present)"
-    - course: "24 Master's Student in Pharmacy"
-      institution: "Hunan University of Science and Technology"
-      year: "2023"
+    - course: "BEng in Biomedical Engineering"
+      institution: "South China University of Technology"
+      year: "2024"
 experience: 
 social:
   - type: "email"
