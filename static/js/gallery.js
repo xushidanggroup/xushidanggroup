@@ -8,6 +8,13 @@ class Gallery {
         this.isDragging = false;
         this.startX = 0;
         this.startY = 0;
+
+        // 将实例方法绑定到全局作用域
+        window.openModal = this.openModal.bind(this);
+        window.closeModal = this.closeModal.bind(this);
+        window.showPreviousImage = this.showPreviousImage.bind(this);
+        window.showNextImage = this.showNextImage.bind(this);
+
         this.init();
     }
 
@@ -41,29 +48,22 @@ class Gallery {
         const container = document.getElementById('gallery-container');
         if (!container) return;
 
-        // 获取所有唯一的年份并按降序排序
         const years = [...new Set(this.images.map(img => img.year))].sort((a, b) => b - a);
-
-        // 清空容器
         container.innerHTML = '';
 
-        // 为每个年份动态生成标题和缩略图容器
         years.forEach(year => {
             const yearImages = this.images.filter(img => img.year === year);
-            if (yearImages.length > 0) {  // 只有当该年份有图片时才创建
-                // 创建年份标题
+            if (yearImages.length > 0) {
                 const title = document.createElement('h2');
                 title.className = 'text-xl text-center my-4';
                 title.textContent = year;
                 container.appendChild(title);
 
-                // 创建缩略图容器
                 const thumbnailsDiv = document.createElement('div');
                 thumbnailsDiv.className = 'gallery-thumbnails';
                 thumbnailsDiv.id = `thumbnails${year}`;
                 container.appendChild(thumbnailsDiv);
 
-                // 生成该年份的缩略图
                 this.generateThumbnailsForYear(yearImages, `thumbnails${year}`);
             }
         });

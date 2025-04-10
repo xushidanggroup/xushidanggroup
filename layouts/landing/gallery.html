@@ -26,11 +26,9 @@
         }
         .gallery-thumbnails {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(clamp(150px, 20vw, 300px), 1fr));
-            gap: 15px;
-            padding: 20px;
-            max-width: 90vw;
-            margin: 0 auto;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* 固定最小宽度更美观 */
+            gap: 30px; /* 增加间距 */
+            padding: 30px; /* 增加内边距 */
         }
         .thumbnail-container {
             position: relative;
@@ -43,6 +41,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        .thumbnail-container:hover {
+            transform: scale(1.05); /* 轻微放大 */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* 增强阴影 */
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         .thumbnail-container img {
             width: 100%;
@@ -61,7 +64,7 @@
             color: #666;
         }
         .modal {
-            display: none;
+            display: none; /* 默认隐藏 */
             position: fixed;
             top: 0;
             left: 0;
@@ -72,6 +75,8 @@
             align-items: center;
             z-index: 1000;
         }
+
+        /* 确保 .modal-content 始终可见 */
         .modal-content {
             position: relative;
             max-width: 90%;
@@ -80,6 +85,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
             overflow: hidden;
+            opacity: 1; /* 防止被父元素的 opacity 影响 */
         }
         .modal-content img {
             max-width: 100%;
