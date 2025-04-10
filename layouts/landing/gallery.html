@@ -141,11 +141,7 @@
 
     <h1 class="page-title">{{ .Title }}</h1>
 
-    <h2 class="text-xl text-center my-4">2025</h2>
-    <div class="gallery-thumbnails" id="thumbnails2025"></div>
-
-    <h2 class="text-xl text-center my-4">2024</h2>
-    <div class="gallery-thumbnails" id="thumbnails2024"></div>
+    <div id="gallery-container"></div>
 
     <div class="modal" id="modal">
         <div class="modal-content">
@@ -159,6 +155,12 @@
         </div>
     </div>
 
-    <script src="/js/gallery.min.js"></script>
+    <script>
+        window.GALLERY_CONFIG = {
+            dataUrl: '/data/gallery-data.json'
+        };
+    </script>
+
+    <script src="/js/gallery.js"></script>
 </main>
 {{ end }}
