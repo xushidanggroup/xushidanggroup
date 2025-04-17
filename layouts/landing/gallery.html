@@ -103,14 +103,22 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: #1E90FF; /* 改为图片中的蓝色 */
             color: white;
             border: none;
-            font-size: 2em;
-            padding: 10px 20px;
+            font-size: 1.5em;
+            width: 40px; /* 固定宽度 */
+            height: 40px; /* 固定高度 */
+            line-height: 40px; /* 垂直居中文本 */
+            text-align: center; /* 水平居中文本 */
             cursor: pointer;
             z-index: 1;
-            border-radius: 50%;
+            border-radius: 4px; /* 轻微圆角 */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .modal-nav:hover {
+            background-color: #1873CC; /* 悬停时颜色变深 */
+            transform: translateY(-50%) scale(1.1); /* 轻微放大 */
         }
         .modal-nav.left { left: 20px; }
         .modal-nav.right { right: 20px; }
@@ -118,13 +126,21 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: #1E90FF; /* 改为图片中的蓝色 */
             color: white;
             border: none;
             font-size: 1.5em;
-            padding: 5px 10px;
+            width: 40px; /* 固定宽度 */
+            height: 40px; /* 固定高度 */
+            line-height: 40px; /* 垂直居中文本 */
+            text-align: center; /* 水平居中文本 */
             cursor: pointer;
-            border-radius: 50%;
+            border-radius: 4px; /* 轻微圆角 */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .close-modal:hover {
+            background-color: #1873CC; /* 悬停时颜色变深 */
+            transform: scale(1.1); /* 轻微放大 */
         }
         .modal-loading {
             position: absolute;
