@@ -207,89 +207,107 @@ class Gallery {
                 else if (e.key === 'Escape') this.closeModal();
             }
         });
-
+    
         // 点击模态框外部关闭
         document.getElementById('modal').addEventListener('click', (e) => {
             const modalContent = document.querySelector('.modal-content');
             if (!modalContent.contains(e.target)) this.closeModal();
         });
-
+    
         // 鼠标滚轮缩放
         const modalImage = document.getElementById('modalImage');
         modalImage.addEventListener('wheel', (e) => {
             e.preventDefault();
-            const delta = e.deltaY > 0 ? -0.1 : 0.1; // 滚轮方向调整缩放
-            this.scale = Math.min(Math.max(1, this.scale + delta), 3); // 限制缩放范围 1 到 3
-            
+            const delta = e.deltaY > 0 ? -0.1 : 0.1;
+            this.scale = Math.min(Math.max(1, this.scale + delta), 3);
+            console.log('Wheel scale:', this.scale);
             if (this.scale <= 1) {
-                this.resetImageTransform(); // 缩到最小恢复初始状态
+                this.resetImageTransform();
             } else {
-                this.restrictTranslate(); // 限制拖动范围
-                this.applyTransform(); // 应用缩放和位移
-                this.updateCursorStyle(); // 更新光标
+                this.restrictTranslate();
+                this.applyTransform();
+                this.updateCursorStyle();
             }
         });
-
+    
         // 鼠标拖拽
         modalImage.addEventListener('mousedown', (e) => {
-            if (this.scale <= 1) return; // 未缩放时不拖拽
+            if (this.scale <= 1) return;
             e.preventDefault();
             this.isDragging = true;
             const rect = modalImage.getBoundingClientRect();
-            this.startX = e.clientX - this.translateX * this.scale; // 计算鼠标起始位置
+            this.startX = e.clientX - this.translateX * this.scale;
             this.startY = e.clientY - this.translateY * this.scale;
             modalImage.style.cursor = 'grabbing';
-            modalImage.style.transition = 'none'; // 移除过渡效果以便实时拖动
+            modalImage.style.transition = 'none';
         });
-
+    
         document.addEventListener('mousemove', (e) => {
             if (!this.isDragging) return;
             e.preventDefault();
             const rect = modalImage.getBoundingClientRect();
-            this.translateX = (e.clientX - this.startX) / this.scale; // 按缩放比例调整位移
+            this.translateX = (e.clientX - this.startX) / this.scale;
             this.translateY = (e.clientY - this.startY) / this.scale;
-            this.restrictTranslate(); // 限制拖动范围
-            this.applyTransform(); // 应用位移
+            this.restrictTranslate();
+            this.applyTransform();
         });
-
+    
         document.addEventListener('mouseup', () => {
             if (this.isDragging) {
                 this.isDragging = false;
                 modalImage.style.cursor = 'grab';
-                modalImage.style.transition = 'transform 0.1s ease-out'; // 恢复过渡效果
+                modalImage.style.transition = 'transform 0.1s ease-out';
             }
         });
-
-        // 手机端触摸支持（可选）
-        let touchStartX = 0;
-        let touchEndX = 0;
-
+    
+        // 手机端单指拖拽
         modalImage.addEventListener('touchstart', (e) => {
-            if (e.touches.length === 1) {
-                touchStartX = e.touches[0].screenX;
+            if (e.touches.length === 1 && this.scale > 1) {
+                console.log('Touch start:', e.touches.length, 'Scale:', this.scale);
+                e.preventDefault();
+                this.isDragging = true;
+                const touch = e.touches[0];
+                const rect = modalImage.getBoundingClientRect();
+                this.startX = touch.clientX - this.translateX * this.scale;
+                this.startY = touch.clientY - this.translateY * this.scale;
+                modalImage.style.transition = 'none';
             }
         });
-
-        modalImage.addEventListener('touchend', (e) => {
-            if (e.changedTouches.length === 1) {
-                touchEndX = e.changedTouches[0].screenX;
-                const swipeDistance = touchEndX - touchStartX;
-                if (swipeDistance > 50) this.showPreviousImage();
-                else if (swipeDistance < -50) this.showNextImage();
+    
+        modalImage.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 1 && this.isDragging) {
+                console.log('Touch move:', this.translateX, this.translateY);
+                e.preventDefault();
+                const touch = e.touches[0];
+                this.translateX = (touch.clientX - this.startX) / this.scale;
+                this.translateY = (touch.clientY - this.startY) / this.scale;
+                this.restrictTranslate();
+                this.applyTransform();
             }
         });
-
+    
+        modalImage.addEventListener('touchend', () => {
+            if (this.isDragging) {
+                console.log('Touch end');
+                this.isDragging = false;
+                modalImage.style.transition = 'transform 0.1s ease-out';
+            }
+        });
+    
+        // 手机端双指缩放
         let initialDistance = 0;
         modalImage.addEventListener('touchstart', (e) => {
             if (e.touches.length === 2) {
+                console.log('Double touch start');
                 const touch1 = e.touches[0];
                 const touch2 = e.touches[1];
                 initialDistance = Math.hypot(touch1.pageX - touch2.pageX, touch1.pageY - touch2.pageY);
             }
         });
-
+    
         modalImage.addEventListener('touchmove', (e) => {
             if (e.touches.length === 2) {
+                console.log('Double touch move');
                 e.preventDefault();
                 const touch1 = e.touches[0];
                 const touch2 = e.touches[1];
@@ -297,7 +315,7 @@ class Gallery {
                 const scaleChange = currentDistance / initialDistance;
                 this.scale = Math.min(Math.max(1, this.scale * scaleChange), 3);
                 initialDistance = currentDistance;
-
+    
                 if (this.scale <= 1) this.resetImageTransform();
                 else {
                     this.restrictTranslate();
