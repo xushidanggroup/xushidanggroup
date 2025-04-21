@@ -64,7 +64,7 @@
             color: #666;
         }
         .modal {
-            display: none; /* 默认隐藏 */
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
@@ -75,8 +75,6 @@
             align-items: center;
             z-index: 1000;
         }
-
-        /* 确保 .modal-content 始终可见 */
         .modal-content {
             position: relative;
             max-width: 90%;
@@ -85,10 +83,10 @@
             border-radius: 8px;
             overflow: hidden;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
-
         .modal-content img {
             max-width: 100%;
             max-height: 80vh;
@@ -100,47 +98,43 @@
             user-select: none;
         }
         .modal-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: #1E90FF; /* 改为图片中的蓝色 */
+            background-color: #1E90FF;
             color: white;
             border: none;
             font-size: 1.5em;
-            width: 40px; /* 固定宽度 */
-            height: 40px; /* 固定高度 */
-            line-height: 40px; /* 垂直居中文本 */
-            text-align: center; /* 水平居中文本 */
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
             cursor: pointer;
-            z-index: 1;
-            border-radius: 4px; /* 轻微圆角 */
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
         .modal-nav:hover {
-            background-color: #1873CC; /* 悬停时颜色变深 */
-            transform: translateY(-50%) scale(1.1); /* 轻微放大 */
+            background-color: #1873CC;
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 添加悬停阴影 */
         }
-        .modal-nav.left { left: 20px; }
-        .modal-nav.right { right: 20px; }
         .close-modal {
             position: absolute;
             top: 10px;
             right: 10px;
-            background-color: #1E90FF; /* 改为图片中的蓝色 */
+            background-color: #1E90FF;
             color: white;
             border: none;
             font-size: 1.5em;
-            width: 40px; /* 固定宽度 */
-            height: 40px; /* 固定高度 */
-            line-height: 40px; /* 垂直居中文本 */
-            text-align: center; /* 水平居中文本 */
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
             cursor: pointer;
-            border-radius: 4px; /* 轻微圆角 */
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
         .close-modal:hover {
-            background-color: #1873CC; /* 悬停时颜色变深 */
-            transform: scale(1.1); /* 轻微放大 */
+            background-color: #1873CC;
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 统一阴影 */
         }
         .modal-loading {
             position: absolute;
@@ -157,34 +151,9 @@
             height: 40px;
             animation: spin 1s linear infinite;
         }
-        .modal-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90%;
-            background-color: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column; /* 垂直布局 */
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-nav {
-            background-color: #1E90FF;
-            color: white;
-            border: none;
-            font-size: 1.5em;
-            width: 40px;
-            height: 40px;
-            line-height: 40px;
-            text-align: center;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-        .modal-nav:hover {
-            background-color: #1873CC;
-            transform: scale(1.1);
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         /* 移动端样式 */
         @media (max-width: 768px) {
@@ -193,7 +162,7 @@
                 max-height: 98%;
             }
             .modal-content img {
-                max-height: 70vh; /* 留出按钮空间 */
+                max-height: 70vh;
                 width: 100%;
                 object-fit: contain;
             }
@@ -205,8 +174,12 @@
                 margin-bottom: 10px;
             }
             .modal-nav {
-                position: static; /* 移除绝对定位 */
-                transform: none; /* 移除transform */
+                position: static;
+                transform: none;
+            }
+            .modal-nav:hover {
+                transform: scale(1.1);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             }
         }
         /* 桌面端样式 */
@@ -215,6 +188,10 @@
                 position: absolute;
                 top: 50%;
                 transform: translateY(-50%);
+            }
+            .modal-nav:hover {
+                transform: translateY(-50%) scale(1.1); /* 保持垂直居中并放大 */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             }
             .modal-nav.left { left: 20px; }
             .modal-nav.right { right: 20px; }
