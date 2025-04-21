@@ -8,12 +8,13 @@ class Gallery {
         this.isDragging = false;
         this.startX = 0;
         this.startY = 0;
+        this.rotation = 0;
 
-        // 将实例方法绑定到全局作用域
         window.openModal = this.openModal.bind(this);
         window.closeModal = this.closeModal.bind(this);
         window.showPreviousImage = this.showPreviousImage.bind(this);
         window.showNextImage = this.showNextImage.bind(this);
+        window.toggleRotate = this.toggleRotate.bind(this);
 
         this.init();
     }
@@ -152,10 +153,19 @@ class Gallery {
         };
     }
 
+    toggleRotate() {
+        this.rotation = this.rotation === 0 ? 90 : 0;
+        const rotateButton = document.querySelector('.rotate-button');
+        rotateButton.textContent = this.rotation === 0 ? '⟳' : '⟲';
+        this.applyTransform();
+        this.restrictTranslate();
+    }
+
     resetImageTransform() {
         this.scale = 1;
         this.translateX = 0;
         this.translateY = 0;
+        this.rotation = 0;
         this.applyTransform();
         this.updateCursorStyle();
     }
@@ -163,7 +173,7 @@ class Gallery {
     applyTransform() {
         const modalImage = document.getElementById('modalImage');
         if (modalImage) {
-            modalImage.style.transform = `scale(${this.scale}) translate(${this.translateX}px, ${this.translateY}px)`;
+            modalImage.style.transform = `rotate(${this.rotation}deg) scale(${this.scale}) translate(${this.translateX}px, ${this.translateY}px)`;
         }
     }
 
@@ -182,8 +192,9 @@ class Gallery {
         const containerRect = modalContent.getBoundingClientRect();
         const imageRect = modalImage.getBoundingClientRect();
 
-        const scaledWidth = imageRect.width * this.scale;
-        const scaledHeight = imageRect.height * this.scale;
+        const isRotated = this.rotation === 90;
+        const scaledWidth = (isRotated ? imageRect.height : imageRect.width) * this.scale;
+        const scaledHeight = (isRotated ? imageRect.width : imageRect.height) * this.scale;
 
         if (scaledWidth <= containerRect.width) this.translateX = 0;
         if (scaledHeight <= containerRect.height) this.translateY = 0;
@@ -198,7 +209,6 @@ class Gallery {
     }
 
     setupEventListeners() {
-        // 键盘事件
         document.addEventListener('keydown', (e) => {
             const modal = document.getElementById('modal');
             if (modal.style.display === 'flex') {
@@ -207,14 +217,12 @@ class Gallery {
                 else if (e.key === 'Escape') this.closeModal();
             }
         });
-    
-        // 点击模态框外部关闭
+
         document.getElementById('modal').addEventListener('click', (e) => {
             const modalContent = document.querySelector('.modal-content');
             if (!modalContent.contains(e.target)) this.closeModal();
         });
-    
-        // 鼠标滚轮缩放
+
         const modalImage = document.getElementById('modalImage');
         modalImage.addEventListener('wheel', (e) => {
             e.preventDefault();
@@ -229,8 +237,7 @@ class Gallery {
                 this.updateCursorStyle();
             }
         });
-    
-        // 鼠标拖拽
+
         modalImage.addEventListener('mousedown', (e) => {
             if (this.scale <= 1) return;
             e.preventDefault();
@@ -241,7 +248,7 @@ class Gallery {
             modalImage.style.cursor = 'grabbing';
             modalImage.style.transition = 'none';
         });
-    
+
         document.addEventListener('mousemove', (e) => {
             if (!this.isDragging) return;
             e.preventDefault();
@@ -251,7 +258,7 @@ class Gallery {
             this.restrictTranslate();
             this.applyTransform();
         });
-    
+
         document.addEventListener('mouseup', () => {
             if (this.isDragging) {
                 this.isDragging = false;
@@ -259,8 +266,7 @@ class Gallery {
                 modalImage.style.transition = 'transform 0.1s ease-out';
             }
         });
-    
-        // 手机端单指拖拽
+
         modalImage.addEventListener('touchstart', (e) => {
             if (e.touches.length === 1 && this.scale > 1) {
                 console.log('Touch start:', e.touches.length, 'Scale:', this.scale);
@@ -273,7 +279,7 @@ class Gallery {
                 modalImage.style.transition = 'none';
             }
         });
-    
+
         modalImage.addEventListener('touchmove', (e) => {
             if (e.touches.length === 1 && this.isDragging) {
                 console.log('Touch move:', this.translateX, this.translateY);
@@ -285,7 +291,7 @@ class Gallery {
                 this.applyTransform();
             }
         });
-    
+
         modalImage.addEventListener('touchend', () => {
             if (this.isDragging) {
                 console.log('Touch end');
@@ -293,8 +299,7 @@ class Gallery {
                 modalImage.style.transition = 'transform 0.1s ease-out';
             }
         });
-    
-        // 手机端双指缩放
+
         let initialDistance = 0;
         modalImage.addEventListener('touchstart', (e) => {
             if (e.touches.length === 2) {
@@ -304,7 +309,7 @@ class Gallery {
                 initialDistance = Math.hypot(touch1.pageX - touch2.pageX, touch1.pageY - touch2.pageY);
             }
         });
-    
+
         modalImage.addEventListener('touchmove', (e) => {
             if (e.touches.length === 2) {
                 console.log('Double touch move');
@@ -315,7 +320,7 @@ class Gallery {
                 const scaleChange = currentDistance / initialDistance;
                 this.scale = Math.min(Math.max(1, this.scale * scaleChange), 3);
                 initialDistance = currentDistance;
-    
+
                 if (this.scale <= 1) this.resetImageTransform();
                 else {
                     this.restrictTranslate();
