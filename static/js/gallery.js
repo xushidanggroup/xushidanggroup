@@ -187,22 +187,65 @@ class Gallery {
         if (!modalContent || !modalImage) return;
 
         const containerRect = modalContent.getBoundingClientRect();
-        const imageRect = modalImage.getBoundingClientRect();
-
+        const naturalWidth = modalImage.naturalWidth;
+        const naturalHeight = modalImage.naturalHeight;
         const isRotated = this.isLandscapeMode;
-        const scaledWidth = isRotated ? imageRect.height * this.scale : imageRect.width * this.scale;
-        const scaledHeight = isRotated ? imageRect.width * this.scale : imageRect.height * this.scale;
 
-        if (scaledWidth <= containerRect.width) this.translateX = 0;
-        if (scaledHeight <= containerRect.height) this.translateY = 0;
+        // 计算图片在当前缩放和旋转状态下的实际显示尺寸
+        let displayWidth = isRotated ? naturalHeight * this.scale : naturalWidth * this.scale;
+        let displayHeight = isRotated ? naturalWidth * this.scale : naturalHeight * this.scale;
 
-        const maxX = Math.max(0, (scaledWidth - containerRect.width) / (2 * this.scale));
-        const minX = -maxX;
-        const maxY = Math.max(0, (scaledHeight - containerRect.height) / (2 * this.scale));
-        const minY = -maxY;
+        // 如果图片未完全加载，跳过限制
+        if (naturalWidth === 0 || naturalHeight === 0) return;
 
-        this.translateX = Math.max(minX, Math.min(maxX, this.translateX));
-        this.translateY = Math.max(minY, Math.min(maxY, this.translateY));
+        // 计算图片在容器中的显示比例，确定是否需要调整
+        const containerAspect = containerRect.width / containerRect.height;
+        const imageAspect = naturalWidth / naturalHeight;
+        let fitWidth, fitHeight;
+
+        if (isRotated) {
+            // 横屏模式，宽高交换
+            if (imageAspect > containerAspect) {
+                fitHeight = containerRect.height;
+                fitWidth = fitHeight * imageAspect;
+            } else {
+                fitWidth = containerRect.width;
+                fitHeight = fitWidth / imageAspect;
+            }
+        } else {
+            // 竖屏模式
+            if (imageAspect < containerAspect) {
+                fitWidth = containerRect.width;
+                fitHeight = fitWidth / imageAspect;
+            } else {
+                fitHeight = containerRect.height;
+                fitWidth = fitHeight * imageAspect;
+            }
+        }
+
+        // 调整缩放后的显示尺寸，考虑初始适应
+        displayWidth = fitWidth * this.scale;
+        displayHeight = fitHeight * this.scale;
+
+        // X轴限制：确保左边缘向右拖拽时不过矩形A的左侧，右边缘向左拖拽时不过右侧
+        if (displayWidth <= containerRect.width) {
+            this.translateX = 0; // 图片宽度小于容器，居中
+        } else {
+            // 左边缘限制：向右拖拽时，左边缘不得超过容器左边界
+            const maxX = (displayWidth - containerRect.width) / (2 * this.scale);
+            // 右边缘限制：向左拖拽时，右边缘不得超过容器右边界
+            const minX = -(displayWidth - containerRect.width) / (2 * this.scale);
+            this.translateX = Math.max(minX, Math.min(maxX, this.translateX));
+        }
+
+        // Y轴限制：确保顶部向下拖拽时不过容器顶部，底部向上拖拽时不过容器底部
+        if (displayHeight <= containerRect.height) {
+            this.translateY = 0; // 图片高度小于容器，居中
+        } else {
+            const maxY = (displayHeight - containerRect.height) / (2 * this.scale);
+            const minY = -maxY;
+            this.translateY = Math.max(minY, Math.min(maxY, this.translateY));
+        }
     }
 
     setupEventListeners() {
@@ -267,9 +310,8 @@ class Gallery {
                     const deltaY = (touch.clientY - this.startY) / this.scale;
 
                     if (this.isLandscapeMode) {
-                        // 横屏模式，顺时针旋转90度，调整拖拽方向
-                        this.translateX += deltaY; // 触摸Y方向增量映射到图像X轴
-                        this.translateY -= deltaX; // 触摸X方向增量映射到图像负Y轴
+                        this.translateX += deltaY;
+                        this.translateY -= deltaX;
                     } else {
                         this.translateX += deltaX;
                         this.translateY += deltaY;
@@ -277,7 +319,6 @@ class Gallery {
 
                     this.restrictTranslate();
                     this.applyTransform();
-                    // 更新startX和startY以确保下次移动连续
                     this.startX = touch.clientX;
                     this.startY = touch.clientY;
                 }
@@ -327,9 +368,8 @@ class Gallery {
             const deltaY = (e.clientY - this.startY) / this.scale;
 
             if (this.isLandscapeMode) {
-                // 横屏模式，顺时针旋转90度，调整拖拽方向
-                this.translateX += deltaY; // 鼠标Y方向增量映射到图像X轴
-                this.translateY -= deltaX; // 鼠标X方向增量映射到图像负Y轴
+                this.translateX += deltaY;
+                this.translateY -= deltaX;
             } else {
                 this.translateX += deltaX;
                 this.translateY += deltaY;
@@ -337,7 +377,6 @@ class Gallery {
 
             this.restrictTranslate();
             this.applyTransform();
-            // 更新startX和startY以确保下次移动连续
             this.startX = e.clientX;
             this.startY = e.clientY;
         });
