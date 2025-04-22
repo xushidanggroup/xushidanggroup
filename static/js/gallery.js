@@ -190,8 +190,8 @@ class Gallery {
         const imageRect = modalImage.getBoundingClientRect();
 
         const isRotated = this.isLandscapeMode;
-        const scaledWidth = (isRotated ? imageRect.height : imageRect.width) * this.scale;
-        const scaledHeight = (isRotated ? imageRect.width : imageRect.height) * this.scale;
+        const scaledWidth = isRotated ? imageRect.height * this.scale : imageRect.width * this.scale;
+        const scaledHeight = isRotated ? imageRect.width * this.scale : imageRect.height * this.scale;
 
         if (scaledWidth <= containerRect.width) this.translateX = 0;
         if (scaledHeight <= containerRect.height) this.translateY = 0;
@@ -242,9 +242,8 @@ class Gallery {
                 if (this.scale <= 1) return;
                 e.preventDefault();
                 this.isDragging = true;
-                const rect = modalImage.getBoundingClientRect();
-                this.startX = e.clientX - this.translateX * this.scale;
-                this.startY = e.clientY - this.translateY * this.scale;
+                this.startX = e.clientX;
+                this.startY = e.clientY;
                 modalImage.style.cursor = 'grabbing';
                 modalImage.style.transition = 'none';
             });
@@ -254,9 +253,8 @@ class Gallery {
                     e.preventDefault();
                     this.isDragging = true;
                     const touch = e.touches[0];
-                    const rect = modalImage.getBoundingClientRect();
-                    this.startX = touch.clientX - this.translateX * this.scale;
-                    this.startY = touch.clientY - this.translateY * this.scale;
+                    this.startX = touch.clientX;
+                    this.startY = touch.clientY;
                     modalImage.style.transition = 'none';
                 }
             });
@@ -265,19 +263,23 @@ class Gallery {
                 if (e.touches.length === 1 && this.isDragging) {
                     e.preventDefault();
                     const touch = e.touches[0];
-                    let deltaX = (touch.clientX - this.startX) / this.scale;
-                    let deltaY = (touch.clientY - this.startY) / this.scale;
+                    const deltaX = (touch.clientX - this.startX) / this.scale;
+                    const deltaY = (touch.clientY - this.startY) / this.scale;
 
                     if (this.isLandscapeMode) {
-                        this.translateX = deltaY;
-                        this.translateY = -deltaX;
+                        // 横屏模式，顺时针旋转90度，调整拖拽方向
+                        this.translateX += deltaY; // 触摸Y方向增量映射到图像X轴
+                        this.translateY -= deltaX; // 触摸X方向增量映射到图像负Y轴
                     } else {
-                        this.translateX = deltaX;
-                        this.translateY = deltaY;
+                        this.translateX += deltaX;
+                        this.translateY += deltaY;
                     }
 
                     this.restrictTranslate();
                     this.applyTransform();
+                    // 更新startX和startY以确保下次移动连续
+                    this.startX = touch.clientX;
+                    this.startY = touch.clientY;
                 }
             });
 
@@ -321,20 +323,23 @@ class Gallery {
             if (!this.isDragging) return;
             e.preventDefault();
             const modalImage = document.getElementById(this.isLandscapeMode ? 'landscapeModalImage' : 'modalImage');
-            const rect = modalImage.getBoundingClientRect();
-            let deltaX = (e.clientX - this.startX) / this.scale;
-            let deltaY = (e.clientY - this.startY) / this.scale;
+            const deltaX = (e.clientX - this.startX) / this.scale;
+            const deltaY = (e.clientY - this.startY) / this.scale;
 
             if (this.isLandscapeMode) {
-                this.translateX = deltaY;
-                this.translateY = -deltaX;
+                // 横屏模式，顺时针旋转90度，调整拖拽方向
+                this.translateX += deltaY; // 鼠标Y方向增量映射到图像X轴
+                this.translateY -= deltaX; // 鼠标X方向增量映射到图像负Y轴
             } else {
-                this.translateX = deltaX;
-                this.translateY = deltaY;
+                this.translateX += deltaX;
+                this.translateY += deltaY;
             }
 
             this.restrictTranslate();
             this.applyTransform();
+            // 更新startX和startY以确保下次移动连续
+            this.startX = e.clientX;
+            this.startY = e.clientY;
         });
 
         document.addEventListener('mouseup', () => {
