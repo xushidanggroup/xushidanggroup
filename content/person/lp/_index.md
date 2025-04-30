@@ -11,7 +11,7 @@ organizations:
 bio: "My research interests include artificial intelligence and bioinformatics."
 education:
   courses:
-    - course: "MEng in Biomedical Engineering"
+    - course: "MSc in Biomedical Engineering"
       institution: "South China University of Technology"
       year: "Currently Enrolled (2024 - Present)"
     - course: "BEng in Biomedical Engineering"

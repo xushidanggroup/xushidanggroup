@@ -11,7 +11,7 @@ organizations:
 bio: "My research focuses on RNA and protein chemical modifications to improve translation efficiency and control protein-protein interactions, with added interests in applying machine learning to these processes."
 education:
   courses:
-    - course: "Master in Chemistry"
+    - course: "MSc in Chemistry"
       institution: "South China University of Technology"
       year: "2023 - Present"
     - course: "Bachelor in Applied Chemistry"

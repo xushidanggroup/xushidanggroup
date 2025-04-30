@@ -11,7 +11,7 @@ organizations:
 bio: "My research interests include machine learning, drug design, material discovery, and artificial intelligence."
 education:
   courses:
-    - course: "MEng in Pharmacy"
+    - course: "MSc in Pharmacy"
       institution: "South China University of Technology"
       year: "2024 - Present"
     - course: "BEng in Material Science and Engineering"

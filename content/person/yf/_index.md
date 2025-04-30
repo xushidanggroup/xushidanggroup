@@ -11,13 +11,16 @@ organizations:
 bio: 
 education:
   courses:
-    - course: "MEng in Biomedical Engineering"
+    - course: "MSc in Biomedical Engineering"
       institution: "South China University of Technology"
       year: "Currently Enrolled (2025 - Present)"
+    - course: "BSc in Traditional Chinese Medicine"
+      institution: "Guangzhou University of Chinese Medicine"
+      year: "2025"
 experience: 
 social:
   - type: "email"
-    link: "19866809606@163.com"
+    link: "2784331517@qq.com"
     icon: "envelope"
     icon_pack: "fas"
 bio_detail: |

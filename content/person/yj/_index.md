@@ -11,7 +11,7 @@ organizations:
 bio: "My research interests include AIGC algorithms, representation learning, and their applications in image recognition, molecular generation, and protein-drug interaction prediction."
 education:
   courses:
-    - course: "Master in Biomedical Engineering"
+    - course: "MSc in Biomedical Engineering"
       institution: "South China University of Technology"
       year: "2023 - 2026"
     - course: "Bachelor in Communication Engineering"

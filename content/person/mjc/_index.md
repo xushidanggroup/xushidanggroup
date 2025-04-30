@@ -11,7 +11,7 @@ organizations:
 bio: "My research interests include Drug Discovery, Deep Learning, Machine Learning, Biomedical material."
 education:
   courses:
-    - course: "MEng in Pharmacy"
+    - course: "MSc in Pharmacy"
       institution: "South China University of Technology"
       year: "Currently Enrolled (2024 - Present)"
     - course: "BEng in Biomedical Engineering"

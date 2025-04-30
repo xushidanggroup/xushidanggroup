@@ -11,7 +11,7 @@ organizations:
 bio: 
 education:
   courses:
-    - course: "MEng in Pharmacy"
+    - course: "MSc in Pharmacy"
       institution: "South China University of Technology"
       year: "Currently Enrolled (2025 - Present)"
 experience: 

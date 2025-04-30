@@ -11,7 +11,7 @@ organizations:
 bio: "My research focuses on the development and application of integrated diagnosis and treatment biomaterials in tumor targeting and immune therapy drug delivery, with a current commitment to applying artificial intelligence to early tumor diagnosis, designing and developing drug delivery carriers, and enhancing precise prediction of drug efficacy."
 education:
   courses:
-    - course: "Biology and Medicine"
+    - course: "PhD in Biology and Medicine"
       institution: "South China University of Technology"
       year: "2023 - Present"
     - course: "Master of Medicine in Surgery"

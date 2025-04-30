@@ -11,7 +11,7 @@ organizations:
 bio: 
 education:
   courses:
-    - course: "MEng in Biomedical Engneering"
+    - course: "MSc in Biomedical Engneering"
       institution: "South China University of Technology"
       year: "Currently Enrolled (2025 - Present)"
 experience: 

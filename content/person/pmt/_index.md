@@ -11,7 +11,7 @@ organizations:
 bio: "My research interests include Molecular Dynamics Simulation, First-Principles Calculation, Machine Learning, Material Discovery."
 education:
   courses:
-    - course: "MEng in Biomedical Engineering"
+    - course: "MSc in Biomedical Engineering"
       institution: "South China University of Technology"
       year: "Currently Enrolled (2023 - Present)"
     - course: "BEng in Material Science and Engineering"
