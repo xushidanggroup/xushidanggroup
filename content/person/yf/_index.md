@@ -16,7 +16,7 @@ education:
       year: "Currently Enrolled (2025 - Present)"
     - course: "BSc in Traditional Chinese Medicine"
       institution: "Guangzhou University of Chinese Medicine"
-      year: "2025"
+      year: "2021 - 2025"
 experience: 
 social:
   - type: "email"

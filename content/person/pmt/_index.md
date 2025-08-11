@@ -16,7 +16,7 @@ education:
       year: "Currently Enrolled (2023 - Present)"
     - course: "BEng in Material Science and Engineering"
       institution: "Hunan University of Science and Technology"
-      year: "2023"
+      year: "2019 - 2023"
 experience: 
 social:
   - type: "email"

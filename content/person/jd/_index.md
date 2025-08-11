@@ -16,10 +16,10 @@ education:
       year: "Currently Enrolled (2024 - Present)"
     - course: "MSc in Computer Technology"
       institution: "Soochow University"
-      year: "2024"
+      year: "2020 - 2024"
     - course: "BSc in Computer Science and Technology"
       institution: "Tianjin Chengjian University"
-      year: "2020"
+      year: "2016 - 2020"
 social:
   - type: "email"
     link: "jdyan09@163.com"

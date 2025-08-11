@@ -16,7 +16,7 @@ education:
       year: "2024 - Present"
     - course: "BEng in Material Science and Engineering"
       institution: "Hunan University of Science and Technology"
-      year: "2024"
+      year: "2020 - 2024"
 social:
   - type: "email"
     link: "niubo7645@gmail.com"

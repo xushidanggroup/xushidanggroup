@@ -16,7 +16,7 @@ education:
       year: "Currently Enrolled (2024 - Present)"
     - course: "BEng in Biomedical Engineering"
       institution: "South China University of Technology"
-      year: "2024"
+      year: "2020 - 2024"
 social:
   - type: "email"
     link: "llp_scut@126.com"

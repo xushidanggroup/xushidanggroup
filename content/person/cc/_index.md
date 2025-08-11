@@ -16,10 +16,10 @@ education:
       year: "Currently Enrolled (2023 - Present)"
     - course: "MSc in Organic Chemistry"
       institution: "Jiangxi Science and Technology Normal University"
-      year: "2023"
+      year: "2019 - 2023"
     - course: "BSc in Chemistry"
       institution: "Xi'an Normal University"
-      year: "2019"
+      year: "2015 - 2019"
 social:
   - type: "email"
     link: "lcc1430880822@163.com"

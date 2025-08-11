@@ -16,7 +16,7 @@ education:
       year: "2024 - Present"
     - course: "BEng in Biomedical Engineering"
       institution: "Hainan University"
-      year: "2024"
+      year: "2020 - 2024"
 social: []
 bio_detail: |
   Shicheng Lang is a PhD student in biomedical engineering who joined Xu's research group in 2024. His research focuses on the application of machine learning and big data analytics in the biomedical field, aiming to extract valuable insights from complex biological data and support precision medicine and intelligent healthcare solutions.
