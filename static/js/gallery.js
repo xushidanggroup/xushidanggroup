@@ -27,7 +27,8 @@ class Gallery {
 
     async loadData() {
         try {
-            const response = await fetch(window.GALLERY_CONFIG.dataUrl);
+            // 添加时间戳参数，避免浏览器缓存旧 JSON
+            const response = await fetch(window.GALLERY_CONFIG.dataUrl + '?v=' + Date.now());
             const data = await response.json();
             
             this.thumbnailBasePath = data.basePaths.thumbnails;
@@ -91,6 +92,18 @@ class Gallery {
             img.onload = () => {
                 img.classList.add('loaded');
                 loading.style.display = 'none';
+                
+                // 新增：动态调整容器比例（基于图片natural尺寸）
+                if (img.naturalWidth && img.naturalHeight) {
+                    const aspectRatio = img.naturalWidth / img.naturalHeight;
+                    thumbnail.style.aspectRatio = aspectRatio;  // 设容器宽/高 = 图片比例
+                    thumbnail.style.background = 'none';  // 可选：去灰背景（充满后无需）
+                }
+            };
+            // 可选：加onerror处理
+            img.onerror = () => {
+                console.error(`Failed to load thumb: ${image.thumbSrc}`);
+                loading.textContent = 'Error';
             };
 
             thumbnail.onclick = () => this.openModal(image.index);

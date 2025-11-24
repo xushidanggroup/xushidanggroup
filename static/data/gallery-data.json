@@ -1,7 +1,7 @@
 {
     "basePaths": {
-      "thumbnails": "/thumbnails/",
-      "images": "/images/"
+      "thumbnails": "/images/gallery/thumbnails/",
+      "images": "/images/gallery/"
     },
     "images": [
       {"fileName": "1_清远漂流.jpg", "year": 2024},
@@ -20,6 +20,8 @@
       {"fileName": "14_大南山3.jpg", "year": 2024},
       {"fileName": "15_大南山4.jpg", "year": 2024},
       {"fileName": "16_大南山5.jpg", "year": 2024},
-      {"fileName": "17_大南山6.jpg", "year": 2024}
+      {"fileName": "17_大南山6.jpg", "year": 2024},
+      {"fileName": "18_东盛楼_2025.jpg", "year": 2025},
+      {"fileName": "19_乒乓球赛_2025.jpg", "year": 2025}
     ]
   }

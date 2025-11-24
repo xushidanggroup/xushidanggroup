@@ -34,7 +34,7 @@
         }
         .gallery-thumbnails {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));  /* 保持gap和列宽 */
             gap: 30px;
             padding: 30px;
         }
@@ -44,11 +44,13 @@
             overflow: hidden;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background: #e0e0e0;
-            aspect-ratio: 3 / 2;
+            background: #e0e0e0;  /* 保留，但动态后少用 */
+            /* 移除 aspect-ratio: 3 / 2; */
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 100%;  /* 新增：容器满列宽 */
+            height: auto;  /* 新增：高自适应 */
         }
         .thumbnail-container:hover {
             transform: scale(1.05);
@@ -56,9 +58,9 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
         .thumbnail-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+            width: 100%;  /* 充满容器宽 */
+            height: 100%;  /* 充满容器高 */
+            object-fit: cover;  /* 改成cover：充满，可能轻微裁剪（优先无空白）；如果想全显，用contain但需JS去背景 */
             border-radius: 8px;
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
