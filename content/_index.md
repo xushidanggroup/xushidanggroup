@@ -10,5 +10,5 @@ sections:
       title: 
       subtitle: ''
       text: |
-        ### ?
+        Error 404
 ---
