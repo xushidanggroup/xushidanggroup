@@ -4,7 +4,7 @@
 # This file is formatted using YAML syntax - learn more at https://learnxinyminutes.com/docs/yaml/
 
 title: Error # Website name
-baseURL: 'https://xushidanggroup.netlify.app/' # Website URL
+baseURL: 'https://group.netlify.app/' # Website URL
 
 ############################
 ## LANGUAGE
