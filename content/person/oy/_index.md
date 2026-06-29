@@ -23,5 +23,5 @@ social:
     icon: "envelope"
     icon_pack: "fas"
 bio_detail: |
-  Ouyang Junchi is a biomedical engineering master's student in Xu's research group and joined the research group in 2024. He is very interested in applying artificial intelligence to the field of medical design and development, and believes that AI has great potential in a wide range of fields.
+  Just testing the website :)
 ---
